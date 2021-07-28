@@ -1,14 +1,17 @@
-<!DOCTYPE html>
+{% load static %}<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
     <title>Coffees</title>
+    <link rel="stylesheet" href="{% static 'hello/css/bootstrap.min.css' %}">
   </head>
   <body>
-    <h1>Coffees</h1>
-
-    <table border="1">
-      <thead>
+    <div class="container">
+      <ol class="breadcrumb my-4">
+        <li class="breadcrumb-item active">My Coffee List</li>
+      </ol>
+    <table class="table">
+      <thead class="thead-inverse">
         <tr>
           <th>Coffee</th>
           <th>Roaster</th>
@@ -19,18 +22,16 @@
       <tbody>
         {% for c in coffees %}
           <tr>
-            <td>{{ c.name }}</td>
-            <td>{{c.roaster}}</td>
-            <td>{{c.country}}</td>
-            <td>{{c.rating}}</td>
+            <td class="align-middle">{{ c.name }}</td>
+            <td class="align-middle">{{c.roaster}}</td>
+            <td class="align-middle">{{c.country}}</td>
+            <td class="align-middle">{{c.rating}}</td>
           </tr>
         {% endfor %}
       </tbody>
     </table>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
   </body>
 </html>
