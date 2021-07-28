@@ -16,8 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.conf.urls import url
+
+from hello import views
 
 urlpatterns = [
-    path("", include("hello.urls")),
-    path('admin/', admin.site.urls)
+    url(r'^$', views.home, name='home'),
+    url(r'^start-coffee/', views.start_coffee, name = 'start_coffee'),
+    url(r'^admin/', admin.site.urls),
 ]
