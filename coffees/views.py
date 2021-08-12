@@ -8,24 +8,9 @@ from .forms import NewCoffeeForm
 
 # Create your views here.
 
-def home(request):
-    return render(
-        request,
-        'home.html'
-    )
-
-def user_home(request, username):
-    active_user = get_object_or_404(User, username = username)
-    coffees = dim_coffee.objects.all()
-    return render(
-        request,
-        'user_home.html',
-        {'user':active_user, 'coffees':coffees}
-    )
-
 def user_coffees(request, username):
     active_user = get_object_or_404(User, username = username)
-    coffees = dim_coffee.objects.all()
+    coffees = dim_coffee.objects.all() #TODO FILTER FOR THE USER's COFFEES
     return render(
         request,
         'user_coffees.html',
@@ -34,17 +19,9 @@ def user_coffees(request, username):
 
 def add_coffee(request, username):
     active_user = get_object_or_404(User, username = username)
-    # user = User.objects.first()  # TODO: get the currently logged in user
-    
     if request.method == 'POST':
         form=NewCoffeeForm(request.POST)
         if form.is_valid():
-            # name = form.cleaned_data['coffee_name']
-            # roaster = form.cleaned_data['roaster_name']
-            # #rating = request.POST['rating']
-            # coffee = dim_coffee(name=name,
-            #     roaster=roaster
-            # )
             coffee = form.save()
             return redirect(
                 'user_coffees',

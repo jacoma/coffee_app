@@ -17,16 +17,17 @@ from django.contrib import admin
 from django.urls import include, path
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf.urls import url
-
+from django.contrib.auth import views as auth_views
 from accounts import views as accounts_views
 from coffees import views
 
 urlpatterns = [
-    url(r'^$', views.home, name='home'),
+    url(r'^$', accounts_views.home, name='home'),
     url(r'^signup/$', accounts_views.signup, name='signup'),
-    url(r'^user/(?P<username>[\w.@+-]+)/$', views.user_home, name='user_home'),
+    url(r'^logout/$', auth_views.LogoutView.as_view(), name='logout'),
+    url(r'^user/(?P<username>[\w.@+-]+)/$', accounts_views.user_home, name='user_home'),
     url(r'^user/(?P<username>[\w.@+-]+)/coffees/$', views.user_coffees, name='user_coffees'),
-    url(r'^user/(?P<username>[\w.@+-]+)/profile/$', views.user_profile, name='user_profile'),
+    url(r'^user/(?P<username>[\w.@+-]+)/profile/$', accounts_views.user_profile, name='user_profile'),
     url(r'^user/(?P<username>[\w.@+-]+)/add-coffee/$', views.add_coffee, name="add_coffee"),
     url(r'^admin/', admin.site.urls),
 ]
