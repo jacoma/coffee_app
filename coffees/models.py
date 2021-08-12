@@ -59,7 +59,7 @@ class ratings(models.Model):
         choices = coffeeRating.choices
     )
     last_updated = models.DateTimeField(auto_now_add=True)
-    updated_by = models.ForeignKey(settings.AUTH_USER_MODEL, default='', null=True, blank=True, on_delete=models.SET_NULL)
+    user_id = models.ForeignKey(settings.AUTH_USER_MODEL, default='', null=True, blank=True, on_delete=models.SET_NULL)
 
 
 
