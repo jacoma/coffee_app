@@ -6,35 +6,6 @@ from django.contrib.auth.forms import UserCreationForm
 from ..forms import SignUpForm
 
 # Create your tests here.
-class HomeTests(TestCase):
-    def test_home_view_status_code(self):
-        url = reverse('home')
-        response = self.client.get(url)
-        self.assertEquals(response.status_code, 200)
-
-    def test_home_url_resolves_home_view(self):
-        view = resolve('/')
-        self.assertEquals(view.func, accounts_views.home)
-
-class UserProfileTests(TestCase):
-    def setUp(self):
-        test_user1 = User.objects.create_user(username='Django', password='1X<ISRUkw+tuK', email = 'django@gmail.com')
-        test_user1.save()
-
-    def test_user_profile_view_success_status_code(self):
-        url = reverse('user_home', kwargs={'username': 'Django'})
-        response = self.client.get(url)
-        self.assertEquals(response.status_code, 200)
-
-    def test_user_profile_view_not_found_status_code(self):
-        url = reverse('user_home', kwargs={'username': 'about'})
-        response = self.client.get(url)
-        self.assertEquals(response.status_code, 404)
-
-    def test_user_profile_url_resolves_user_profile_view(self):
-        view = resolve('/user/Django/')
-        self.assertEquals(view.func, accounts_views.user_home)
-
 class SignUpTests(TestCase):
     def setUp(self):
         url = reverse('signup')
@@ -72,13 +43,13 @@ class SuccessfulSignUpTests(TestCase):
     def setUp(self):
         url = reverse('signup')
         data = {
-            'username': 'john',
+            'username': 'Django',
             'email': 'john@doe.com',
             'password1': 'abcdef123456',
             'password2': 'abcdef123456'
         }
         self.response = self.client.post(url, data)
-        self.home_url = reverse('user_home')
+        self.home_url = reverse('user_home', {'username':'Django'})
 
     def test_redirection(self):
         '''

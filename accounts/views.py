@@ -3,6 +3,8 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from .forms import SignUpForm
+from coffees.models import ratings, dim_coffee
+from django.contrib.auth.decorators import login_required
 
 #from django.utils.timezone import datetime
 #from django.http import HttpResponse
@@ -14,20 +16,32 @@ def home(request):
         'home.html'
     )
 
-def user_home(request, username):
+@login_required
+def user_home(request):
     #active_user = get_object_or_404(User, username = username)
     return render(
         request,
         'user_home.html',
-        {'username':username}
+        {'username':request.user}
     )
 
-def user_profile(request, username):
-    active_user = get_object_or_404(User, username = username)
+@login_required
+def user_coffees(request):
+    # active_user = get_object_or_404(User, username = username)
+    coffees = dim_coffee.objects.all() #TODO FILTER FOR THE USER's COFFEES
+    return render(
+        request,
+        'user_coffees.html',
+        {'user':request.user, 'coffees':coffees}
+    )
+
+@login_required
+def user_profile(request):
+    # active_user = get_object_or_404(User, username = username)
     return render(
         request,
         'user_profile.html',
-        {'username':active_user.username}
+        {'username':request.user}
     )
 
 def signup(request):
@@ -42,13 +56,3 @@ def signup(request):
     else:
         form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
-
-def login(request):
-    return render(request, 'user_home.html')
-
-#TODO
-def reset_password(request):
-    return render(request, 'user_home.html')
-
-def change_password(request):
-    return render(request, 'user_home.html')

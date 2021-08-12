@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+from django.contrib.auth.models import User
+from django.urls import reverse, resolve
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -130,4 +132,7 @@ STATICFILES_DIRS =[
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+LOGIN_URL = 'login'
 LOGOUT_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = reverse('user_home', {'username': User.username})
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

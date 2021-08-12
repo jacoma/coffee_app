@@ -4,33 +4,58 @@ from django.utils.timezone import datetime
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import ratings, User, dim_coffee
-from .forms import NewCoffeeForm
+from .forms import NewCoffeeForm, NewRatingForm
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
-
-def user_coffees(request, username):
-    active_user = get_object_or_404(User, username = username)
-    coffees = dim_coffee.objects.all() #TODO FILTER FOR THE USER's COFFEES
-    return render(
-        request,
-        'user_coffees.html',
-        {'user':active_user, 'coffees':coffees}
-    )
-
-def add_coffee(request, username):
-    active_user = get_object_or_404(User, username = username)
+@login_required
+def add_coffee(request):
+    # active_user = username
     if request.method == 'POST':
         form=NewCoffeeForm(request.POST)
         if form.is_valid():
-            coffee = form.save()
+            coffee = form.save(commit=False)
+            coffee.name = ''
+            coffee.roaster = ''
+            coffee.save()
+            # ratings.objects.create(
+            #     message=form.cleaned_data.get('message'),
+            #     topic=topic,
+            #     rated_by=request.user  # <- and here
+            # )
             return redirect(
                 'user_coffees',
-                username=active_user.username
+                username=request.user
             )
     else:
         form=NewCoffeeForm()
     return render(
         request,
         'add_coffee.html',
-        {'user':active_user, 'form': form}
+        {'username':request.user, 'form': form}
+    )
+
+# TODO 
+@login_required
+def add_rating(request, coffee_id):
+    # active_user = username
+    if request.method == 'POST':
+        form=NewRatingForm(request.POST)
+        if form.is_valid():
+            rate = form.save(commit=False)
+            rate.coffee_id = coffee_id
+            rate.user = request.user
+            rate.brew_method = ''
+            rate.rating = ''
+            rate.save()
+            return redirect(
+                'user_coffees',
+                username=request.user
+            )
+    else:
+        form=NewRatingForm()
+    return render(
+        request,
+        'add_rating.html',
+        {'username':request.user, 'coffee':coffee_id, 'form': form}
     )
