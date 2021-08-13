@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'coffees',
     'accounts',
-    'widget_tweaks'
+    'widget_tweaks',
+    'formtools'
 ]
 
 MIDDLEWARE = [

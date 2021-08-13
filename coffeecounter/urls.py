@@ -48,6 +48,7 @@ urlpatterns = [
     url(r'^coffees/$', accounts_views.user_coffees, name='user_coffees'),
     url(r'^profile/$', accounts_views.user_profile, name='user_profile'),
     url(r'^add-coffee/$', views.add_coffee, name="add_coffee"),
-    url(r'^rate/$', views.add_rating, name="rate_coffee"),
+    url(r"^rate/", views.RatingWizard.as_view(), name="rate_coffee"),
+    # url(r'^rate/$', views.add_rating, name="rate_coffee"),
     url(r'^admin/', admin.site.urls),
 ]

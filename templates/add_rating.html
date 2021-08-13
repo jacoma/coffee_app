@@ -3,12 +3,24 @@
 {% block title %}Rate Coffee{% endblock %}
 
 {% block content %}
-<div class='row m-4 padding-md'>
-  <div class="col col-2"></div>
-  <div class="col col-8" id="dropdownMacos">
+<div class='row m-4 padding-md justify-content-center'>
+  <!-- <div class="col col-2"></div> -->
+    <div class="col-lg-4 col-md-6 col-sm-8">
+      <div class="card">
+        <div class="card-body">
+          <h3 class="card-title">Select a Roaster</h3>
+          <form method="post" novalidate>
+            {% csrf_token %}
+            <!-- <input type="hidden" name="next" value="{{ next }}"> -->
+            {% include 'includes/forms.html' %}
+            <button type="submit" class="btn btn-primary btn-block">Next</button>
+          </form>
+        </div>
+      </div>
+    </div>
+   <!-- <div class="col col-8" id="dropdownMacos">
     <form>
       <div class="form-group">
-        <!-- <label for="formGroupExampleInput">Roaster</label> -->
         <select class="custom-select custom-select-md">
           <option selected>Roaster Name</option>
           {% for c in coffee %}
@@ -17,7 +29,6 @@
         </select>
       </div>
       <div class="form-group">
-        <!-- <label for="formGroupExampleInput2">Name</label> -->
         <select class="custom-select custom-select-md">
           <option selected>Coffee Name</option>
           {% for c in coffee %}
@@ -25,9 +36,8 @@
           {% endfor %}
         </select>
       </div>
-    </form>    
-  </div>
-  <div class="col col-2"></div>
+    </form>     -->
+  <!-- <div class="col col-2"></div> -->
 </div>
 {% endblock %}
 
