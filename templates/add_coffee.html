@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
-{% block title %}Add a New Coffee{% endblock %}
+{% block title %}Add Coffee{% endblock %}
 
 {% block breadcrumb %}
-  <li class="breadcrumb-item"><a href="{% url 'user_home' username%}">{{username}}</a></li>
+  <li class="breadcrumb-item"><a href="{% url 'home'%}">{{user.username}}</a></li>
   <li class="breadcrumb-item active">Add Coffee</li>
 {% endblock %}
 

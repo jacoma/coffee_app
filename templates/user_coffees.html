@@ -1,11 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}User{% endblock %}
 
-{% block breadcrumb %}
-<li class="breadcrumb-item"><a href="{% url 'user_home' user.username%}">{{ user.username }}</a></li>
-<li class="breadcrumb-item active">Coffee</li>
-{% endblock %}
-
 {% block content %}
     <table class="table">
       <thead class="thead-inverse">

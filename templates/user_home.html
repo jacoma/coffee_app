@@ -1,12 +1,8 @@
 {% extends 'base.html' %}
 {% block title %}User{% endblock %}
 
-{% block breadcrumb %}
-<li class="breadcrumb-item active">{{ username }}</li>
-{% endblock %}
-
 {% block content %}
 <div class="mb-4">
-  <a href="{% url 'add_coffee' username%}" class="btn btn-primary">Add Coffee</a>
+  <a href="{% url 'rate_coffee'%}" class="btn btn-primary">Rate Coffee</a>
 </div>
 {% endblock %}

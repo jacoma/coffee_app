@@ -61,6 +61,8 @@ class ratings(models.Model):
     last_updated = models.DateTimeField(auto_now_add=True)
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL, default='', null=True, blank=True, on_delete=models.SET_NULL)
 
+    def __str__(self):
+        return self.name
 
 
 
