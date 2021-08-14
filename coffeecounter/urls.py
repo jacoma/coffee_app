@@ -20,6 +20,7 @@ from django.conf.urls import url
 from django.contrib.auth import views as auth_views
 from accounts import views as accounts_views
 from coffees import views
+from coffees.views import FORMS
 
 urlpatterns = [
     url(r'^$', accounts_views.home, name='home'),
@@ -46,9 +47,9 @@ urlpatterns = [
         name='password_reset_complete'),
     # url(r'^user/(?P<username>[\w.@+-]+)/$', accounts_views.user_home, name='user_home'),
     url(r'^coffees/$', accounts_views.user_coffees, name='user_coffees'),
-    url(r'^profile/$', accounts_views.user_profile, name='user_profile'),
+    url(r'^settings/account/$', accounts_views.UserUpdateView.as_view(), name='my_account'),
     url(r'^add-coffee/$', views.add_coffee, name="add_coffee"),
-    url(r"^rate/", views.RatingWizard.as_view(), name="rate_coffee"),
+    url(r"^rate/", views.RatingWizard.as_view(FORMS), name="rate_coffee"),
     # url(r'^rate/$', views.add_rating, name="rate_coffee"),
     url(r'^admin/', admin.site.urls),
 ]

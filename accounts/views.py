@@ -5,7 +5,11 @@ from django.contrib.auth.forms import UserCreationForm
 from .forms import SignUpForm
 from coffees.models import ratings, dim_coffee
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect, HttpResponse 
+from django.http import HttpResponseRedirect, HttpResponse
+from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views.generic import UpdateView
+
 
 # Create your views here.
 
@@ -42,9 +46,12 @@ def user_coffees(request):
         {'coffees':coffees}
     )
 
-@login_required
-def user_profile(request):
-    return render(
-        request,
-        'user_profile.html'
-    )
+@method_decorator(login_required, name='dispatch')
+class UserUpdateView(UpdateView):
+    model = User
+    fields = ('first_name', 'last_name', 'email', )
+    template_name = 'my_account.html'
+    success_url = reverse_lazy('my_account')
+
+    def get_object(self):
+        return self.request.user

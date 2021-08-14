@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}Rate Coffee{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <!-- <p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p> -->
+  <div class="col-lg-4 col-md-8 col-sm-12">
+    <div id="login-card">
+      <div class="card-body">
+        <h3 class="card-title text-center" >Select a Roaster</h3>
+        <br>
+        <form action="" method="post">
+          {% csrf_token %}
+          {{ wizard.management_form }}
+          {% if wizard.form.forms %}
+            {{ wizard.form.management_form }}
+            {% for form in wizard.form.forms %}
+              {{ form }}
+            {% endfor %}
+          {% else %}
+            {{ wizard.form }}
+          {% endif %}
+          {% if wizard.steps.prev %}
+          <button class='btn btn-primary btn-block' name="wizard_goto_step " type="submit" value="{{ wizard.steps.first }}">{% trans "first step" %}</button>
+          <button class='btn btn-primary btn-block' name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">{% trans "prev step" %}</button>
+          {% endif %}
+          <input type="submit" id='button' class='btn btn-primary btn-block' value="{% trans "submit" %}"/>
+        </form>
+{% endblock %}
+
