@@ -3,7 +3,7 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from .forms import SignUpForm
-from coffees.models import ratings, dim_coffee
+from coffee.models import ratings, dim_coffee
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse_lazy
