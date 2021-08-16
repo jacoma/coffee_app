@@ -5,6 +5,7 @@
     <table class="table">
       <thead class="thead-inverse">
         <tr>
+          <th>Rating</th>
           <th>Coffee</th>
           <th>Roaster</th>
           <th>Country</th>
@@ -13,9 +14,10 @@
       <tbody>
         {% for c in coffees %}
           <tr>
+            <td class="align-middle">{{c.rating}}</td>
             <td class="align-middle">{{ c.name }}</td>
             <td class="align-middle">{{c.roaster}}</td>
-            <td class="align-middle">{{c.country}}</td>
+            <td class="align-middle">{{c.brew_method}}</td>
           </tr>
         {% endfor %}
       </tbody>

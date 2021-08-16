@@ -1,16 +1,36 @@
 {% extends 'base.html' %}
 
-{% block title %}Add Coffee{% endblock %}
-
-{% block breadcrumb %}
-  <li class="breadcrumb-item"><a href="{% url 'home'%}">{{user.username}}</a></li>
-  <li class="breadcrumb-item active">Add Coffee</li>
-{% endblock %}
+{% block title %}Rate Coffee{% endblock %}
 
 {% block content %}
-  <form method="post" novalidate>
-    {% csrf_token %}
-    {% include 'includes/forms.html' %}
-    <button type="submit" class="btn btn-success">Add</button>
-  </form>
+<div class="row justify-content-center">
+    <div id="wizard" role="application" class="wizard clearfix vertical">
+      <div class="steps clearfix"></div>
+      <br> 
+        <div class="card-body">
+          <h3 class="card-title text-center">Add Coffee 1</h3>
+          <form action="" method="post" novalidate>
+            <div class ="content clearfix" id="rating-card">
+              {% csrf_token %}
+              <!-- <input type="hidden" name="next" value="{{ next }}"> -->
+              {% include 'includes/forms.html' %}
+            </div>
+            <div class="actions">
+              <ul>
+                <li>
+                  <button class='btn btn-primary' name="add_roaster" type="submit" formaction="{% url 'add_roaster' %}" value="add_roaster">
+                    Add Roaster
+                  </button>
+                </li>
+                <li>
+                  <button class='btn btn-primary' id="next-btn" type="submit" value="add_coffee">
+                    Next
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

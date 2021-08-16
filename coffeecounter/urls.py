@@ -19,7 +19,6 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path, include
 
 urlpatterns = [
-    # url(r'^rate/$', views.add_rating, name="rate_coffee"),
     path('admin/', admin.site.urls),
     path(r'', include('coffee.urls')),
     path(r'', include('accounts.urls'))

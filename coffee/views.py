@@ -1,102 +1,173 @@
-import re
-from django.utils.timezone import datetime
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, reverse
 from coffee.models import *
 from coffee.forms import *
 from django.contrib.auth.decorators import login_required
-from formtools.wizard.views import SessionWizardView
 from django.utils.decorators import method_decorator
+from django.views.generic import FormView, CreateView, ListView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-FORMS = [
-    ("roaster", RatingForm1),
-    ("coffee", RatingForm2),
-    ("brew", RatingForm3),
-    ("notes", RatingForm4),
-    ("rate", RatingForm5)
-]
-
-TEMPLATES = {
-    "roaster": "rating_roaster.html",
-    "coffee": "rating_coffee.html",
-    "brew": "rating_brew.html",
-    "notes": "rating_notes.html",
-    "rate": "rating_rate.html"
-}
+##
+# USER COFFEE
+##
 
 @method_decorator(login_required, name='dispatch')
-class RatingWizard(SessionWizardView):
-    def get_template_names(self):
-        return [TEMPLATES[self.steps.current]]
+class coffeeList(LoginRequiredMixin, ListView):
+    template_name = "ratings_list.html"
+    context_object_name = 'coffees'
+    model = ratings
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['coffees'] = context['coffees'].filter(user_id=self.request.user)
+        # context['count'] = context['tasks'].filter(complete=False).count()
+
+        # search_input = self.request.GET.get('search-area') or ''
+        # if search_input:
+        #     context['tasks'] = context['tasks'].filter(
+        #         title__contains=search_input)
+
+        # context['search_input'] = search_input
+
+        return context
+
+
+
+##
+# RATE COFFEE
+##
+
+@method_decorator(login_required, name='dispatch')
+class selectRoaster(FormView):
+    """ A view to start the 'Rate Coffee' process; user should pick Roaster first."""
+    template_name = "add_rating.html"
+    form_class = roasterForm
+
+    def get_success_url(self):
+        """ Overides the success url when the view is run """
+        return reverse("select_coffee")
+
+    def form_valid(self, form):
+        """
+        Takes the POST data from the Roaster Form and stores it in the session
+        """
+        self.request.session["name"] = form.cleaned_data["name"].name
+        return super(selectRoaster, self).form_valid(form)
+
+@method_decorator(login_required, name='dispatch')
+class selectCoffee(FormView):
+    """ A view to start the 'Rate Coffee' process """
+    template_name = "add_rating.html"
+    form_class = coffeeForm
+
+    def post(self, request, *args, **kwargs):
+        """
+        Handle POST requests: instantiate a form instance with the passed
+        POST variables and then check if it's valid.
+        """
+        form = self.get_form()
+        if request.POST.get('roaster'):
+            self.request.session['create_coffee_roaster']=request.POST.get('roaster')
+            return redirect(reverse('add_coffee1'))
+        else:
+            if form.is_valid():
+                return self.form_valid(form)
+               
+            else:
+                return self.form_invalid(form)
+    
+    def get_form_kwargs(self, step=None):
+        kwargs = super(selectCoffee, self).get_form_kwargs()
+        kwargs.update({'roaster': self.request.session["name"]})
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        """ Adds to the context the Product objects categorized as trips """
+        context = super().get_context_data(**kwargs)
+        context["formStep"] = 1
+        context['roaster'] = self.request.session["name"]
+        return context
+
+##
+# CREATE ROASTER
+##
+class roasterCreate(CreateView):
+    template_name = "add_coffee.html"
+    model = dim_roaster
+    fields = ['name']
+    success_url='add_coffee1'
+
+
+##
+# CREATE COFFEE
+##
+
+class coffeeCreate1(CreateView):
+    # specify the model for create view
+    template_name = "add_coffee.html"
+    model = dim_coffee
+  
+    # specify the fields to be displayed
+    fields = ['roaster', 'name']
 
     def get_form_kwargs(self, step=None):
-        kwargs = {}
-        if step == 'coffee':
-            step0_form_field = self.get_cleaned_data_for_step('roaster')['name']
-            kwargs.update({'step0_form_field': step0_form_field})
-        return kwargs 
-    
-    def done(self, form_list, **kwargs):
-        # do_something_with_the_form_data(form_list)
-        return redirect('home')
-        # return render(self.request, 'done.html', {
-        #     'form_data': [form.cleaned_data for form in form_list],
-        # })
+        kwargs = super(coffeeCreate1, self).get_form_kwargs()
+        # kwargs.update({'roaster': self.request.session["name"]})
+        return kwargs
 
-# def do_something_with_the_form_data(form_list):
-#     """
-#     Do something, such as sending mail
-#     """
-#     form_data = [form.cleaned_data for form in form_list]
+    def get_initial(self):
+        # pre-populate form if someone goes back and forth between forms
+        initial = super(coffeeCreate1, self).get_initial()
+        initial = initial.copy()
+        roaster = self.request.session.get('create_coffee_roaster', None) 
+        if roaster == None:
+            return initial
+        else:
+            roaster = dim_roaster.objects.filter(name=self.request.session['create_coffee_roaster']).values_list('roaster_id', flat=True)[0]
+            initial['roaster'] = roaster
+            return initial
 
-#     print('#####')
-#     print('Subject: %s' % form_data[0]['subject'])
-#     print('Sender: %s' % form_data[0]['sender'])
-#     print('Message: %s' % form_data[1]['message'])
-#     print('#####')
+    def get_context_data(self, **kwargs):
+        """ Adds to the context the Product objects categorized as trips """
+        context = super().get_context_data(**kwargs)
+        context["formStep"] = 0
+        return context
 
-# Create your views here.
-# @login_required
-# def add_coffee(request):
-#     if request.method == 'POST':
-#         form=RatingForm1(request.POST)
-#         if form.is_valid():
-#             coffee = form.save(commit=False)
-#             coffee.name = ''
-#             coffee.roaster = ''
-#             coffee.save()
-#             return redirect(
-#                 'user_coffees'
-#             )
-#     else:
-#         form=RatingForm1()
-#     return render(
-#         request,
-#         'add_coffee.html',
-#         {'form': form}
-#     )
+    def get_success_url(self):
+        """ Overides the success url when the view is run """
+        return reverse("add_coffee2")
 
-# @login_required
-# def add_rating(request):
-#     # coffees = dim_coffee.objects.all()
-#     if request.method == 'POST':
-#         form=RatingForm2(request.POST)
-#         if form.is_valid():
-#             rate = form.save(commit=False)
-#             # rate.coffee_id
-#             # rate.user = request.user
-#             # rate.brew_method = ''
-#             # rate.rating = ''
-#             # rate.roaster
-                #rate.last_updated = timezone.now()
-#             rate.save()
-#             return redirect(
-#                 'user_coffees'
-#             )
-#     else:
-#         form=RatingForm2()
-#     return render(
-#         request,
-#         'add_rating.html',
-#         {'form': form}
-#     )
+class coffeeCreate2(CreateView):
+    # specify the model for create view
+    template_name = "add_coffee.html"
+    model = dim_coffee
+  
+    # specify the fields to be displayed
+    fields = ['country', 'elevation', 'farmer', 'process']
+
+    def get_success_url(self):
+        """ Overides the success url when the view is run """
+        return reverse("add_coffee3")
+
+class coffeeCreate3(CreateView):
+    # specify the model for create view
+    template_name = "add_coffee.html"
+    model = dim_coffee
+  
+    # specify the fields to be displayed
+    fields = ['varietals']
+
+    def get_success_url(self):
+        """ Overides the success url when the view is run """
+        return reverse("add_coffee4")
+
+class coffeeCreate4(CreateView):
+    # specify the model for create view
+    template_name = "add_coffee.html"
+    model = dim_coffee
+  
+    # specify the fields to be displayed
+    fields = ['roaster_notes']
+
+    def get_success_url(self):
+        """ Overides the success url when the view is run """
+        return reverse("home")

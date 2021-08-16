@@ -1,10 +1,13 @@
 from django.urls import path
 from coffee import views
-from coffee.views import FORMS
 
 urlpatterns = [
-    # path("add-coffee/", views.add_coffee, name="add_coffee"),
-    path("rate/", views.RatingWizard.as_view(FORMS), name="rate_coffee"),
-    # path('^coffees/$', views.user_coffees, name='user_coffees'),
-    # url(r'^user/(?P<username>[\w.@+-]+)/$', accounts_views.user_home, name='user_home'),
+    path("coffees", views.coffeeList.as_view(), name="user_coffees"),
+    path("rate-roaster/", views.selectRoaster.as_view(), name="select_roaster"),
+    path("rate-coffee/", views.selectCoffee.as_view(), name="select_coffee"),
+    path("add-roaster/", views.roasterCreate.as_view(), name="add_roaster"),
+    path("add-coffee/1", views.coffeeCreate1.as_view(), name="add_coffee1"),
+    path("add-coffee/2", views.coffeeCreate2.as_view(), name="add_coffee2"),
+    path("add-coffee/3", views.coffeeCreate3.as_view(), name="add_coffee3"),
+    path("add-coffee/4", views.coffeeCreate4.as_view(), name="add_coffee4"),
 ]

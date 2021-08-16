@@ -51,9 +51,9 @@ class dim_coffee(models.Model):
 
     coffee_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=30, null=True)
-    roaster_id = models.ForeignKey(dim_roaster, to_field='roaster_id', null=True, on_delete=models.DO_NOTHING, related_name="coffees")
+    roaster = models.ForeignKey(dim_roaster, to_field='roaster_id', null=True, on_delete=models.DO_NOTHING, related_name="coffees")
     farmer = models.CharField(max_length = 50, null = True)
-    country_code = models.ForeignKey(countries, to_field='country_code', null=True, on_delete=models.DO_NOTHING, related_name="coffees")
+    country = models.ForeignKey(countries, to_field='country_code', null=True, on_delete=models.DO_NOTHING, related_name="coffees")
     # region = models.CharField(max_length = 50, null = True)
     varietals = models.ManyToManyField(dim_varietal, related_name = 'varieties')
     process = models.CharField(
@@ -65,7 +65,7 @@ class dim_coffee(models.Model):
     roaster_notes = models.ManyToManyField(dim_notes)
 
     def __str__(self):
-        return self.name
+        return self.coffee_id
 
 class ratings(models.Model):
 
@@ -94,7 +94,7 @@ class ratings(models.Model):
         FRENCHPRESS = 'FP', ('French Press')
 
     rating_id = models.AutoField(primary_key=True)
-    coffee_id = models.ForeignKey(dim_coffee, null=True, on_delete=models.DO_NOTHING)
+    coffee = models.ForeignKey(dim_coffee, null=True, on_delete=models.DO_NOTHING)
     brew_method = models.CharField(
         max_length=2,
         choices=brewMethod.choices,

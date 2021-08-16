@@ -3,41 +3,36 @@
 {% block title %}Rate Coffee{% endblock %}
 
 {% block content %}
-<div class='row m-4 padding-md justify-content-center'>
-  <!-- <div class="col col-2"></div> -->
-    <div class="col-lg-4 col-md-6 col-sm-8">
-      <div class="card">
+<div class="row justify-content-center">
+    <div id="wizard" role="application" class="wizard clearfix vertical">
+      <div class="steps clearfix"></div>
+      <br> 
         <div class="card-body">
-          <h3 class="card-title">Select a Roaster</h3>
-          <form method="post" novalidate>
-            {% csrf_token %}
-            <!-- <input type="hidden" name="next" value="{{ next }}"> -->
-            {% include 'includes/forms.html' %}
-            <button type="submit" class="btn btn-primary btn-block">Next</button>
+          <h3 class="card-title text-center">Select one of the roaster's coffees</h3>
+          <form action="" method="post" novalidate>
+            <div class ="content clearfix" id="rating-card">
+              {% csrf_token %}
+              <input type="hidden" name="next" value="{{ next }}">
+              <!-- <input type="hidden" name="next" value="{{ next }}"> -->
+              {% include 'includes/forms.html' %}
+            </div>
+            <div class="actions clearfix">
+              <ul>
+            {% if formStep%}
+                <li>
+                  <button name='roaster' value='{{roaster }}' formaction="{% url 'select_coffee'%}" class="btn btn-primary">Add Coffee</button>
+                </li>
+            {% endif %}
+                <li>
+                  <button type="submit" name = 'Next' class="btn btn-primary btn-block" id="next-btn">
+                    Next
+                  </button>
+                </li>
+              </ul>
+            </div>
           </form>
         </div>
-      </div>
     </div>
-   <!-- <div class="col col-8" id="dropdownMacos">
-    <form>
-      <div class="form-group">
-        <select class="custom-select custom-select-md">
-          <option selected>Roaster Name</option>
-          {% for c in coffee %}
-          <option>{{c.roaster}}</option>
-          {% endfor %}
-        </select>
-      </div>
-      <div class="form-group">
-        <select class="custom-select custom-select-md">
-          <option selected>Coffee Name</option>
-          {% for c in coffee %}
-          <option>{{c.name}}</option>
-          {% endfor %}
-        </select>
-      </div>
-    </form>     -->
-  <!-- <div class="col col-2"></div> -->
 </div>
 {% endblock %}
 

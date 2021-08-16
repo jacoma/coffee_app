@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'coffee',
     'accounts',
     'widget_tweaks',
-    'formtools'
+    'import_export'
 ]
 
 MIDDLEWARE = [
@@ -82,7 +82,15 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    },
+    # 'production':{
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'NAME': 'mydatabase',
+    #     'USER': 'jacoma',
+    #     'PASSWORD': 'skriiasg091!',
+    #     'HOST': '',
+    #     'PORT': '',
+    # }
 }
 
 # Password validation

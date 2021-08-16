@@ -16,6 +16,14 @@ from django.views.generic import UpdateView
 def home(request):
     if request.user.is_authenticated:
         # base_url = 'user/{username}/'.format(username=request.user.username)
+        if request.method=='POST':
+            if request.POST.get('add_roaster'):
+                request.session['create_coffee_roaster']=None
+                return redirect(reverse('add_coffee1'))
+            elif request.POST.get('my_coffee'):
+                return redirect(reverse('user_coffees'))
+            elif request.POST.get('rate_coffee'):
+                return redirect(reverse('select_roaster'))
         return render(request, 'user_home.html')
     else:
         return HttpResponseRedirect(

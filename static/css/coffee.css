@@ -10,11 +10,66 @@
   
 }
 
-#button{
-    border-radius:30px;
-    color:#fff
-
+#rating-card{
+    width:350px;
+    border-radius: 25px;
+    margin:50px auto;
+  
 }
+
+.wizard .content {
+    margin-bottom: 45px;
+}
+
+.wizard .action{
+    display: flex;
+    text-align: center;
+}
+
+.wizard .actions > ul {
+    list-style: none;
+    padding-left: 0;
+    display: -webkit-box;
+    display: flex;
+}
+
+.wizard .actions li #next-btn {
+    display: inline-block;
+    padding: 10px 95px;
+    margin-right: 5px;
+    border-radius: 5px;
+    background-color: #006fd6;
+    border-color: #006fd6;
+    color: #fff;
+    font-style: 14px;
+    font-weight: normal;
+}
+
+.wizard .actions li button{
+    display: inline-block;
+    padding: 10px 15px;
+    margin-right: 5px;
+    border-radius: 5px;
+    background-color: #fff;
+    border-color: #006fd6;
+    color: #006fd6;
+    font-style: 14px;
+    font-weight:normal;
+}
+
+div.wizard > div.card-body > div.actions.clearfix > ul > li > a{
+    display: inline-block;
+    padding: 10px 15px;
+    margin-right: 5px;
+    border-radius: 5px;
+    background-color: #fff;
+    border-color: #006fd6;
+    color: #006fd6;
+    font-style: 14px;
+    font-weight:normal;
+}
+
+
 
 /* DROPDOWN */
 
