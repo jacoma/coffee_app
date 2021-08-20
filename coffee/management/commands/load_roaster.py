@@ -6,7 +6,7 @@ import csv
 from django.core.management import BaseCommand
 
 # Import the model 
-from coffee.models import dim_coffee
+from coffee.models import *
 
 
 ALREDY_LOADED_ERROR_MESSAGE = """
@@ -23,7 +23,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
     
         # Show this if the data already exist in the database
-        if dim_coffee.objects.exists():
+        if dim_roaster.objects.exists():
             print('child data already loaded...exiting.')
             print(ALREDY_LOADED_ERROR_MESSAGE)
             return
@@ -33,17 +33,6 @@ class Command(BaseCommand):
 
 
         #Code to load the data into database
-        for row in csv.reader(open('./test_coffee.csv')):
-            roaster=dim_coffee(
-                coffee_id=row[0],
-                name=row[1],
-                roaster=row[2],
-                farmer=row[3],
-                country=row[4],
-                varietals=row[5],
-                process=row[6],
-                elevation=row[7],
-                roaster_notes=row[8])  
-
-
+        for row in csv.reader(open('./roast.csv')):
+            roaster=dim_roaster(roaster_id=row[0], name=row[1])  
             roaster.save()

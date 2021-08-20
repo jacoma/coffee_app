@@ -2,28 +2,28 @@
 {% block title %}User{% endblock %}
 
 {% block content %}
-<div class="actions">
-
-  <form method="POST" novalidate>
-    {% csrf_token %}
-    <ul>
-      <li>
+<div class='bg-light p-5 rounded'>
+  <div class="actions">
+    <form method="POST" novalidate>
+      {% csrf_token %}
+      <span>
         <button class='btn btn-primary' name="add_roaster" type="submit" formaction="{% url 'home' %}"
           value="add_roaster">
           Add Roaster
         </button>
-      </li>
-      <li>
-        <button name = 'rate_coffee' value = 'rate_coffee' type='submit' formaction="{% url 'home'%}" class="btn btn-primary">
+      </span>
+      <span> 
+        <button name='rate_coffee' value='rate_coffee' type='submit' formaction="{% url 'home'%}"
+          class="btn btn-primary">
           Rate Coffee
         </button>
-      </li>
-      <li>
-        <button name = 'my_coffee' value = 'my_coffee' type='submit' formaction="{% url 'home'%}" class="btn btn-primary">
+      </span>
+      <span>
+        <button name='my_coffee' value='my_coffee' type='submit' formaction="{% url 'home'%}" class="btn btn-primary">
           My Coffee
         </button>
-      </li>
-    </ul>
-  </form>
+      </span>
+    </form>
+  </div>
 </div>
 {% endblock %}

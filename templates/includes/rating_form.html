@@ -10,7 +10,9 @@
 
 {% for field in form %}
   <div class="form-group">
-    {{ field.label_tag }}
+    {% if 'formStep==3'%}
+    <label>Search for notes...</label>
+    {%endif%}
     {% render_field field class=field|input_class %}
     {% for error in field.errors %}
       <div class="invalid-feedback">

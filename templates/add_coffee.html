@@ -3,12 +3,17 @@
 {% block title %}Rate Coffee{% endblock %}
 
 {% block content %}
+<b></b> <br/>
 <div class="row justify-content-center">
     <div id="wizard" role="application" class="wizard clearfix vertical">
       <div class="steps clearfix"></div>
       <br> 
         <div class="card-body">
-          <h3 class="card-title text-center">Add Coffee 1</h3>
+          {% if add_roaster %}
+          <h3 class="card-title text-center">Add Roaster</h3>
+          {% else %}
+          <h3 class="card-title text-center">Add Coffee</h3>
+          {% endif %}
           <form action="" method="post" novalidate>
             <div class ="content clearfix" id="rating-card">
               {% csrf_token %}
@@ -17,20 +22,46 @@
             </div>
             <div class="actions">
               <ul>
+                {% if roasterStep %}
                 <li>
-                  <button class='btn btn-primary' name="add_roaster" type="submit" formaction="{% url 'add_roaster' %}" value="add_roaster">
+                  <button class='btn btn-primary' name="add_roaster" type="submit" formaction="{% url 'add_coffee1' %}" value="add_roaster">
                     Add Roaster
                   </button>
                 </li>
+                {% else %}
+                {%endif%}
+                {% if finalStep%}
                 <li>
-                  <button class='btn btn-primary' id="next-btn" type="submit" value="add_coffee">
+                  <button type="submit" name = 'submit' class="btn btn-primary btn-block" id="next-btn">
+                    Submit
+                  </button>
+                </li>
+                {% else %}
+                <li>
+                  <button type="submit" name = 'Next' class="btn btn-primary btn-block" id="next-btn">
                     Next
                   </button>
                 </li>
+                {% endif %}
               </ul>
             </div>
           </form>
         </div>
     </div>
 </div>
+{% endblock %}
+{% block content2 %}
+{% if varietalStep%} 
+  <script>
+    $(document).ready(function() {
+      $('#id_varietals').select2();ijm
+    });
+  </script>
+{% elif noteStep%}
+  <script>
+    $(document).ready(function() {
+      $('#id_roaster_notes').select2();
+    });
+  </script>
+{%endif%}
 {% endblock %}

@@ -41,6 +41,6 @@ class Command(BaseCommand):
                 country_code_alpha3=row[3],
                 name_long=row[4],
                 latitude=row[5],
-                longitude=row[5]
+                longitude=row[6]
                 )  
             roaster.save()

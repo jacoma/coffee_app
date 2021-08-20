@@ -17,6 +17,10 @@
   
 }
 
+div#coffeeList{
+    width:100%;
+}
+
 .wizard .content {
     margin-bottom: 45px;
 }
@@ -69,6 +73,10 @@ div.wizard > div.card-body > div.actions.clearfix > ul > li > a{
     font-weight:normal;
 }
 
+/* COFFEE CHECKBOXES */
+div.wizard > div.card-body > div.actions.clearfix > ul > li > label{
+    border:1px solid grey;
+}
 
 
 /* DROPDOWN */

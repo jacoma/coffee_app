@@ -8,7 +8,7 @@
       <div class="steps clearfix"></div>
       <br> 
         <div class="card-body">
-          <h3 class="card-title text-center">Select one of the roaster's coffees</h3>
+          <h3 class="card-title text-center">Rate a Coffee</h3>
           <form action="" method="post" novalidate>
             <div class ="content clearfix" id="rating-card">
               {% csrf_token %}
@@ -18,16 +18,30 @@
             </div>
             <div class="actions clearfix">
               <ul>
-            {% if formStep%}
+            {% if rate_roasterStep %}
                 <li>
-                  <button name='roaster' value='{{roaster }}' formaction="{% url 'select_coffee'%}" class="btn btn-primary">Add Coffee</button>
+                  <button name='add_roaster' value='add_roaster' formaction="{% url 'select_roaster'%}" class="btn btn-primary">Add Roaster</button>
                 </li>
+            {% elif rate_coffeeStep %}
+              <li>
+                <button name='roaster' value='{{roaster}}' formaction="{% url 'select_coffee'%}" class="btn btn-primary">Add Coffee</button>
+              </li>
+            {%else%}
+              
             {% endif %}
+            {% if rate_finalStep %}
+                <li>
+                  <button type="submit" name = 'submit' class="btn btn-primary btn-block" id="next-btn">
+                    Submit
+                  </button>
+                </li>
+            {% else %}
                 <li>
                   <button type="submit" name = 'Next' class="btn btn-primary btn-block" id="next-btn">
                     Next
                   </button>
                 </li>
+            {% endif %}
               </ul>
             </div>
           </form>
@@ -35,4 +49,13 @@
     </div>
 </div>
 {% endblock %}
+{% if 'ratingStep==0'%}
+  {% block content2 %}
+    <script>
+      $(document).ready(function() {
+        $('#id_name').select2();
+      });
+    </script>
+  {% endblock %}
+{% endif %}
 
