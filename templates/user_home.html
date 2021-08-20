@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}User{% endblock %}
+
+{% block content %}
+<div class='bg-light p-5 rounded'>
+  <div class="actions">
+    <form method="POST" novalidate>
+      {% csrf_token %}
+      <span>
+        <button class='btn btn-primary' name="add_roaster" type="submit" formaction="{% url 'home' %}"
+          value="add_roaster">
+          Add Roaster
+        </button>
+      </span>
+      <span> 
+        <button name='rate_coffee' value='rate_coffee' type='submit' formaction="{% url 'home'%}"
+          class="btn btn-primary">
+          Rate Coffee
+        </button>
+      </span>
+      <span>
+        <button name='my_coffee' value='my_coffee' type='submit' formaction="{% url 'home'%}" class="btn btn-primary">
+          My Coffee
+        </button>
+      </span>
+    </form>
+  </div>
+</div>
+{% endblock %}

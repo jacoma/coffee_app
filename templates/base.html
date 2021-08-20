@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv=”content-language” content=”en-us”/>
+  <title>{% block title %}Home{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/coffee.css' %}">
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet"/>
+  {% block stylesheet %}{% endblock %}
+</head>
+
+<body>
+  {% block body %}
+  <header>
+    <nav class="navbar navbar-expand-sm navbar-light bg-light">
+      <div class="container">
+        <a class="navbar-brand" href="\">Coffee Notes</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          {% if user.is_authenticated %}
+          <div class="dropdown ml-auto">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              {{ user.username }}
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
+              <li><a class="dropdown-item" href="#">My account</a></li>
+              <li><a class="dropdown-item" href="#">Change password</a></li>
+              <li><a class="dropdown-item" href="{% url 'logout' %}">Log out</a></li>
+            </ul>
+          </div>
+          {% else %}
+          <form class="form-inline ml-auto">
+            <a href="{% url 'login' %}" class="btn btn-outline-secondary">Log in</a>
+            <a href="{% url 'signup' %}" class="btn btn-primary ml-2">Sign up</a>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+    </nav>
+  </header>
+  <main class="d-flex align items center">
+    <div class="container">
+      <br>
+      {% block content %}
+
+      {% endblock %}
+    </div>
+  </main>
+  {% endblock body %}
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"
+    integrity="sha384-eMNCOe7tC1doHpGoWe/6oMVemdAVTMs2xqW4mwXrXsW0L84Iytr2wi5v2QjrP/xp" crossorigin="anonymous">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js"
+    integrity="sha384-cn7l7gDp0eyniUwwAZgrzD06kc/tftFf19TOAs2zVinnD/C7E91j9yyk5//jjpt/" crossorigin="anonymous">
+  </script>
+  {% block content2 %}
+  {% endblock %}
+  
+</body>
+<!-- <footer class="mt-auto d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+  <div class="col-md-4 d-flex align-items-center">
+    <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
+      <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"/></svg>
+    </a>
+    <span class="text-muted">&copy; 2021 Coffee Counter</span>
+  </div>
+
+  <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+    <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"/></svg></a></li>
+    <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"/></svg></a></li>
+    <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"/></svg></a></li>
+  </ul>
+</footer> -->
+
+</html>

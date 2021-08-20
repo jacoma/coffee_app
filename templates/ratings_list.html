@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}User{% endblock %}
+
+{% block content %}
+<div class="table-responsive-sm" id='coffeeList'>
+    <table class="table table-hover">
+      <thead class="thead-inverse">
+        <tr>
+          <th scope="col">Roaster</th>
+          <th scope="col">Coffee</th>
+          <th scope="col">Rating</th>
+          <th scope="col">Brew Method</th>
+          <th scope="col">Date</th>
+          <th scope="col">Update</th>
+          <th scope="col">Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in coffees %}
+          <tr>
+            <td class="align-middle">{{c.coffee.roaster.name}}</td>
+            <td class="align-middle">{{c.coffee.name}}</td>
+            <td class="align-middle">{{c.rating}}</td>        
+            <td class="align-middle">{{c.brew_method}}</td>
+            <td class="align-middle">{{c.last_updated}}</td>
+            <td><a class="btn btn-sm btn-info" href="{% url 'update_rating' c.rating_id %}">Update</a></td>
+						<td><a class="btn btn-sm btn-danger" href="{% url 'delete_rating' c.rating_id %}">Delete</a></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</div>
+{% endblock %}

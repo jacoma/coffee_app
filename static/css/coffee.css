@@ -1,0 +1,131 @@
+.bi {
+    vertical-align: -.125em;
+    fill: currentColor;
+}
+
+#login-card{
+    width:350px;
+    border-radius: 25px;
+    margin:150px auto;
+  
+}
+
+#rating-card{
+    width:350px;
+    border-radius: 25px;
+    margin:50px auto;
+  
+}
+
+div#coffeeList{
+    width:100%;
+}
+
+.wizard .content {
+    margin-bottom: 45px;
+}
+
+.wizard .action{
+    display: flex;
+    text-align: center;
+}
+
+.wizard .actions > ul {
+    list-style: none;
+    padding-left: 0;
+    display: -webkit-box;
+    display: flex;
+}
+
+.wizard .actions li #next-btn {
+    display: inline-block;
+    padding: 10px 95px;
+    margin-right: 5px;
+    border-radius: 5px;
+    background-color: #006fd6;
+    border-color: #006fd6;
+    color: #fff;
+    font-style: 14px;
+    font-weight: normal;
+}
+
+.wizard .actions li button{
+    display: inline-block;
+    padding: 10px 15px;
+    margin-right: 5px;
+    border-radius: 5px;
+    background-color: #fff;
+    border-color: #006fd6;
+    color: #006fd6;
+    font-style: 14px;
+    font-weight:normal;
+}
+
+div.wizard > div.card-body > div.actions.clearfix > ul > li > a{
+    display: inline-block;
+    padding: 10px 15px;
+    margin-right: 5px;
+    border-radius: 5px;
+    background-color: #fff;
+    border-color: #006fd6;
+    color: #006fd6;
+    font-style: 14px;
+    font-weight:normal;
+}
+
+/* COFFEE CHECKBOXES */
+div.wizard > div.card-body > div.actions.clearfix > ul > li > label{
+    border:1px solid grey;
+}
+
+
+/* DROPDOWN */
+
+.dropdown-form {
+    position: static;
+    display: block;
+    width: auto;
+    margin: 4rem auto;
+}
+
+.dropdown-menu-macos {
+    display: grid;
+    gap: .25rem;
+    padding: .5rem;
+    border-radius: .5rem;
+}
+
+.dropdown-menu-macos .dropdown-item {
+    border-radius: .25rem;
+}
+
+.dropdown-item-danger {
+    color: var(--bs-red);
+}
+
+.dropdown-item-danger:hover,
+.dropdown-item-danger:focus {
+    color: #fff;
+    background-color: var(--bs-red);
+}
+
+.dropdown-item-danger.active {
+    background-color: var(--bs-red);
+}
+
+.btn-hover-light {
+    text-align: left;
+    background-color: var(--bs-white);
+    border-radius: .25rem;
+}
+
+.btn-hover-light:hover,
+.btn-hover-light:focus {
+    color: var(--bs-blue);
+    background-color: var(--bs-light);
+}
+
+.form-control-dark {
+    background-color: rgba(255, 255, 255, .05);
+    border-color: rgba(255, 255, 255, .15);
+}
