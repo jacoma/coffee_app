@@ -24,7 +24,6 @@ django-import-export==2.5.0
 django-redis==5.0.0
 django-storages==1.11.1
 django-widget-tweaks==1.4.8
-dotenv==0.19.0
 dnspython==1.16.0
 et-xmlfile==1.1.0
 idna==3.2
