@@ -1,12 +1,10 @@
 from coffeecounter.settings import *
 import os
-from dotenv import load_dotenv
-load_dotenv()
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 
-DEBUG = False
+DEBUG = True
 
 # Configure the domain name using the environment variable
 # that Azure automatically creates for us.
