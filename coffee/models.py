@@ -5,10 +5,10 @@ from django.contrib.auth.models import User
 
 class countries(models.Model):
     country_code = models.IntegerField(primary_key=True)
-    name = models.CharField(max_length=30, null=True)	
+    name = models.CharField(max_length = 200, null=True)	
     country_code_alpha= models.CharField(max_length=2, null=True)	
     country_code_alpha3	= models.CharField(max_length=3, null=True)
-    name_long= models.CharField(max_length=50, null=True)	
+    name_long= models.CharField(max_length = 200, null=True)	
     latitude= models.FloatField(null=True)	
     longitude= models.FloatField(null=True)
 
@@ -20,7 +20,7 @@ class countries(models.Model):
 
 class dim_roaster(models.Model):
     roaster_id = models.AutoField(primary_key=True, unique=True)
-    name = models.CharField(max_length=30, null=True)
+    name = models.CharField(max_length = 200, null=True)
 
     def __str__(self):
         return self.name
@@ -29,7 +29,7 @@ class dim_roaster(models.Model):
         ordering = ['name']
 
 class dim_notes(models.Model):
-    flavor_notes = models.CharField(max_length=30, null=True)
+    flavor_notes = models.CharField(max_length = 200, null=True)
 
     def __str__(self):
         return self.flavor_notes
@@ -38,7 +38,7 @@ class dim_notes(models.Model):
         ordering = ['flavor_notes']
 
 class dim_varietal(models.Model):
-    varietal = models.CharField(max_length=50, null=True)
+    varietal = models.CharField(max_length = 200, null=True)
 
     def __str__(self):
         return self.varietal
@@ -61,9 +61,9 @@ class dim_coffee(models.Model):
         SWISSWATER = 'Swiss Water Decaf', ('Swiss Water Decaf')
 
     coffee_id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=30, null=True)
+    name = models.CharField(max_length = 200, null=True)
     roaster = models.ForeignKey(dim_roaster, to_field='roaster_id', null=True, on_delete=models.SET_NULL, related_name="coffees")
-    farmer = models.CharField(max_length = 50, null = True)
+    farmer = models.CharField(max_length = 200, null = True)
     country = models.ForeignKey(countries, to_field='country_code', null=True, on_delete=models.SET_NULL, related_name="coffees")
     # region = models.CharField(max_length = 50, null = True)
     varietals = models.ManyToManyField(dim_varietal, related_name = 'varieties')

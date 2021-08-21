@@ -33,7 +33,7 @@ class Command(BaseCommand):
 
 
         #Code to load the data into database
-        for row in csv.reader(open('./countries.csv')):
+        for row in csv.reader(open('C:/Users/jacoma/OneDrive - Microsoft/Desktop/data/countries.csv')):
             roaster=countries(
                 country_code=row[0],
                 name=row[1],
