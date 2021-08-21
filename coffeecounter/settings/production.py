@@ -30,7 +30,7 @@ MIDDLEWARE = [
 # AZURE_ACCOUNT_KEY = os.getenv('AZ_STORAGE_KEY')
 
 DEFAULT_FILE_STORAGE = 'storages.backends.azure_storage.AzureStorage'
-STATICFILES_STORAGE = 'storages.backends.custom_azure.AzureStaticStorage'
+STATICFILES_STORAGE = 'coffeecounter.settings.custom_azure.AzureStaticStorage'
 STATIC_LOCATION = os.getenv("AZ_STATIC_CONTAINER")
 # MEDIA_LOCATION = "media"
 
