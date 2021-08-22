@@ -63,7 +63,7 @@ class dim_coffee(models.Model):
     coffee_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length = 200, null=True)
     roaster = models.ForeignKey(dim_roaster, to_field='roaster_id', null=True, on_delete=models.SET_NULL, related_name="coffees")
-    farmer = models.CharField(max_length = 200, null = True)
+    farmer = models.CharField(max_length = 200, null = True, blank=True)
     country = models.ForeignKey(countries, to_field='country_code', null=True, on_delete=models.SET_NULL, related_name="coffees")
     # region = models.CharField(max_length = 50, null = True)
     varietals = models.ManyToManyField(dim_varietal, related_name = 'varieties')
@@ -72,7 +72,7 @@ class dim_coffee(models.Model):
         choices=coffeeProcess.choices,
         null = True
     )
-    elevation = models.IntegerField(null = True, blank=None)
+    elevation = models.IntegerField(null = True, blank=True)
     roaster_notes = models.ManyToManyField(dim_notes, related_name='notes')
 
     def __str__(self):

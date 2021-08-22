@@ -1,4 +1,5 @@
 from django import forms
+from django.db.models import query
 
 from .models import *
 
@@ -66,12 +67,30 @@ class RatingForm3(forms.ModelForm):
     class Meta:
         model = ratings
         fields = ['brew_method']
+        error_messages = {
+            'brew_method': {
+                'required': "Please pick a brew method.",
+            },
+        }
 
 
 class RatingForm5(forms.ModelForm):
     class Meta:
         model = ratings
-        fields = ['reaction', 'rating']
+        fields = ['rating', 'reaction']
+
+    rating=forms.ModelChoiceField(
+        queryset=ratings.objects.all(),
+        empty_label="What did you think?",
+        label="",
+        to_field_name="rating",
+        error_messages={'required': 'Please give it a rating.'},
+        required=True
+    )
+
+    reaction = forms.CharField(
+        label = 'Write your thoughts',
+        required=False)
 
 
 ###
@@ -82,11 +101,28 @@ class createCoffeeForm1(forms.ModelForm):
     class Meta:
         model=dim_coffee
         fields=['roaster', 'name',]
+        error_messages = {
+            'roaster': {
+                'required': "Please pick a roaster or create a new one.",
+            },
+            'name': {
+                'required': "Please give us a name for this coffee.",
+            }
+        }
 
 class createCoffeeForm2(forms.ModelForm):
     class Meta:
         model=dim_coffee
         fields=['country','farmer','elevation','process']
+        error_messages = {
+            'country': {
+                'required': "Which country are these beans from? If a blend, choose 'Blend'.",
+            },
+            'process': {
+                'required': "Please pick how the beans were processed.",
+            }
+        }
+
 
 class createVarietalsForm(forms.ModelForm):
 
@@ -106,6 +142,7 @@ class createNotesForm(forms.ModelForm):
         fields=['roaster_notes']
 
     roaster_notes = forms.ModelMultipleChoiceField(
+        error_messages={'required': 'Please add the tasting notes from the roaster.'},
         widget=forms.SelectMultiple(
             attrs={"class":"myClass"}), 
         queryset=dim_notes.objects.all())

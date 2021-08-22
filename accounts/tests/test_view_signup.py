@@ -49,7 +49,7 @@ class SuccessfulSignUpTests(TestCase):
             'password2': 'abcdef123456'
         }
         self.response = self.client.post(url, data)
-        self.home_url = reverse('user_home', {'username':'Django'})
+        self.home_url = reverse('home')
 
     def test_redirection(self):
         '''
