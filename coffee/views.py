@@ -30,7 +30,7 @@ class coffeeList(LoginRequiredMixin, ListView):
 @method_decorator(login_required, name='dispatch')
 class updateRating(UpdateView):
     model = ratings
-    fields = '__all__'
+    fields = ['coffee', 'brew_method', 'rating', 'reaction']
     template_name = 'update.html'
     success_url = reverse_lazy('user_coffees')
 
@@ -103,7 +103,9 @@ class selectCoffee(FormView):
 
         """ If 'Add Coffee' clicked, then capture roaster and direct to 'Add Coffee' URL"""
         if request.POST.get('roaster'):
+            ### Set session variable to selected roaster in previous step.
             self.request.session['create_coffee_roaster']=request.POST.get('roaster')
+            ### Set session variable to next step after coffee is created.
             self.request.session['redirect_url']='select_brew'
             return redirect(reverse('add_coffee1'))
         ### If form is valid, capture the roaster and coffee names for the final form submit
@@ -205,7 +207,7 @@ class roasterCreate(CreateView):
     def get_context_data(self, **kwargs):
         """ Adds to the context the roaster for the 'Add Coffee' button; also sets form-step to 1 """
         context = super().get_context_data(**kwargs)
-        context["add_roaster"] = self.request.session['add_roaster']
+        context["add_roaster"] = True
         return context
 
 
