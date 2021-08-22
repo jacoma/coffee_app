@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'index.html' %}
 {% block title %}Delete Rating{% endblock %}
 {% load static %}
 {% block content %}
@@ -7,16 +7,13 @@
 <div class="row">
 	<div class="col-md-6">
 		<div class="card card-body">
-
-
 			<p>Are you sure you want to delete this rating?</p>
-
 			<form action="{% url 'delete_rating' rating.rating_id  %}" method="POST">
-				
 				{% csrf_token %}
-				<a class="btn btn-warning" href="{% url 'user_coffees' %}">Cancel</a>
-
-				<input class="btn btn-danger" type="submit" name="Confirm">
+				<a class="d-sm-inline-block btn btn-md btn-light border border-primary shadow-sm" href="{% url 'user_coffees' %}">Cancel</a>
+				<button type="submit" name ='Confirm' class="btn btn-danger d-sm-inline-block btn-md shadow-sm" id="next-btn">
+                    Delete
+                  </button>
 			</form>
 		</div>
 	</div>

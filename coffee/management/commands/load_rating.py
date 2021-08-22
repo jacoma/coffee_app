@@ -25,7 +25,7 @@ class Command(BaseCommand):
 
 
         #Code to load the data into database
-        for row in csv.reader(open('./myratings.csv')):
+        for row in csv.reader(open('C:/Users/jacoma/OneDrive - Microsoft/Desktop/data/myratings.csv')):
             roaster=ratings(
                 coffee_id=row[0],
                 brew_method=row[1],

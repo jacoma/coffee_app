@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'index.html' %}
 {% block title %}Update Rating{% endblock %}
 {% load static %}
 {% block content %}
@@ -10,13 +10,9 @@
 
 			<form action="" method="POST">
 				{% csrf_token %}
-				{{ form.management_form }}
-				{% for field in form %}
-					{{field}}
-					<hr>
-				{% endfor %}
-				<a class="btn btn-secondary" href="{% url 'user_coffees' %}">Cancel</a>
-				<input class='btn btn-primary' type="submit" name="Submit">
+				{% include 'includes/forms.html' %}
+				<a class="d-sm-inline-block btn btn-md btn-light border border-primary shadow-sm" href="{% url 'user_coffees' %}">Cancel</a>
+				<input class='d-sm-inline-block btn btn-md btn-primary shadow-sm' type="submit" name="Submit">
 			</form>
 
 		</div>

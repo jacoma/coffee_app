@@ -1,6 +1,4 @@
 coffee-env/
 .vscode
 .env
-oldenv
 db.sqlite3
-data/

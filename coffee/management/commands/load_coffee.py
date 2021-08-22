@@ -33,7 +33,7 @@ class Command(BaseCommand):
 
 
         #Code to load the data into database
-        for row in csv.reader(open('./mycoffee.csv')):
+        for row in csv.reader(open('C:/Users/jacoma/OneDrive - Microsoft/Desktop/data/mycoffee.csv')):
             my_variety = row[5].split(", ")
             my_notes = row[8].split(", ")
             roaster_x=dim_roaster.objects.get(roaster_id=row[2])

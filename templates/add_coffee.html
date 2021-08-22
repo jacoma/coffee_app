@@ -1,6 +1,10 @@
-{% extends 'base.html' %}
+{% extends 'index.html' %}
 
 {% block title %}Rate Coffee{% endblock %}
+
+{% block stylesheet %}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet"/>
+{% endblock %}
 
 {% block content %}
 <b></b> <br/>
@@ -17,14 +21,13 @@
           <form action="" method="post" novalidate>
             <div class ="content clearfix" id="rating-card">
               {% csrf_token %}
-              <!-- <input type="hidden" name="next" value="{{ next }}"> -->
               {% include 'includes/forms.html' %}
             </div>
             <div class="actions">
               <ul>
                 {% if roasterStep %}
                 <li>
-                  <button class='btn btn-primary' name="add_roaster" type="submit" formaction="{% url 'add_coffee1' %}" value="add_roaster">
+                  <button class='d-sm-inline-block btn btn-md btn-light border border-primary shadow-sm' name="add_roaster" type="submit" formaction="{% url 'add_coffee1' %}" value="add_roaster">
                     Add Roaster
                   </button>
                 </li>
@@ -32,13 +35,13 @@
                 {%endif%}
                 {% if finalStep%}
                 <li>
-                  <button type="submit" name = 'submit' class="btn btn-primary btn-block" id="next-btn">
+                  <button type="submit" name = 'submit' class="d-sm-inline-block btn btn-md btn-primary shadow-sm" id="next-btn">
                     Submit
                   </button>
                 </li>
                 {% else %}
                 <li>
-                  <button type="submit" name = 'Next' class="btn btn-primary btn-block" id="next-btn">
+                  <button type="submit" name = 'Next' class="d-sm-inline-block btn btn-md btn-primary shadow-sm" id="next-btn">
                     Next
                   </button>
                 </li>
@@ -50,7 +53,9 @@
     </div>
 </div>
 {% endblock %}
-{% block content2 %}
+{% block javascript %}
+<!-- Select 2-->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 {% if varietalStep%} 
   <script>
     $(document).ready(function() {

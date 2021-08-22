@@ -1,33 +1,46 @@
-{% extends 'base.html' %}
-{% block title %}User{% endblock %}
+{% extends 'index.html' %}
+{% block title %}My Ratings{% endblock %}
+{% block stylesheet %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+{% endblock %}
 
 {% block content %}
 <div class="table-responsive-sm" id='coffeeList'>
-    <table class="table table-hover">
-      <thead class="thead-inverse">
-        <tr>
-          <th scope="col">Roaster</th>
-          <th scope="col">Coffee</th>
-          <th scope="col">Rating</th>
-          <th scope="col">Brew Method</th>
-          <th scope="col">Date</th>
-          <th scope="col">Update</th>
-          <th scope="col">Delete</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for c in coffees %}
-          <tr>
-            <td class="align-middle">{{c.coffee.roaster.name}}</td>
-            <td class="align-middle">{{c.coffee.name}}</td>
-            <td class="align-middle">{{c.rating}}</td>        
-            <td class="align-middle">{{c.brew_method}}</td>
-            <td class="align-middle">{{c.last_updated}}</td>
-            <td><a class="btn btn-sm btn-info" href="{% url 'update_rating' c.rating_id %}">Update</a></td>
-						<td><a class="btn btn-sm btn-danger" href="{% url 'delete_rating' c.rating_id %}">Delete</a></td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+  <table id="coffeeTable" class="table table-hover">
+    <thead class="thead-inverse">
+      <tr>
+        <th scope="col">Roaster</th>
+        <th scope="col">Coffee</th>
+        <th scope="col">Rating</th>
+        <th scope="col">Brew Method</th>
+        <th scope="col">Date</th>
+        <th scope="col">Update</th>
+        <th scope="col">Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for c in coffees %}
+      <tr>
+        <td class="align-middle">{{c.coffee.roaster.name}}</td>
+        <td class="align-middle">{{c.coffee.name}}</td>
+        <td class="align-middle">{{c.rating}}</td>
+        <td class="align-middle">{{c.brew_method}}</td>
+        <td class="align-middle">{{c.last_updated}}</td>
+        <td><a class="d-sm-inline-block btn btn-sm btn-light border-primary shadow-sm"
+            href="{% url 'update_rating' c.rating_id %}">Update</a></td>
+        <td><a class="d-sm-inline-block btn btn-sm btn-light border-danger shadow-sm"
+            href="{% url 'delete_rating' c.rating_id %}">Delete</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
+{% endblock %}
+{% block javascript %}
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+<script>
+  $(document).ready(function () {
+    $('#coffeeTable').DataTable();
+  });
+</script>
 {% endblock %}
