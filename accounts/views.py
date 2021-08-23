@@ -9,21 +9,32 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import UpdateView
+from django.db.models import Count
 
 
 # Create your views here.
 def home(request):
     if request.user.is_authenticated:
         context = ratings.objects.filter(user_id=request.user)
-        counts = context.count()
-        # roasters = context.rate.values()
-        # base_url = 'user/{username}/'.format(username=request.user.username)
+        num_ratings = context.count()
+        num_coffees = context.values('coffee__coffee_id').distinct().count()
+        num_roasters = context.values('coffee__roaster__roaster_id').distinct().count()
+        pie_qs = context.values('coffee__country__name').annotate(count=Count('coffee__country__name'))
+        base_url = 'user/{username}/'.format(username=request.user.username)
         if request.method=='POST':
             if request.POST.get('my_coffee'):
                 return redirect(reverse('user_coffees'))
             elif request.POST.get('rate_coffee'):
                 return redirect(reverse('select_roaster'))
-        return render(request, 'index.html', {'counts':counts})
+        return render(
+            request, 
+            'index.html', 
+            {
+                'num_ratings':num_ratings, 
+                'num_coffees':num_coffees, 
+                'num_roasters':num_roasters,
+                'pie_qs':pie_qs
+                })
     else:
         return HttpResponseRedirect(
                 reverse(signup)

@@ -21,27 +21,6 @@ class roasterForm(forms.ModelForm):
             attrs={'class': 'custom-select custom-select-md'}), 
         queryset=dim_roaster.objects.all())
 
-# class roasterForm(forms.ModelForm):
-#     name = forms.ModelChoiceField(
-#         empty_label="Find a Roaster",
-#         label="",
-#         to_field_name="name",
-#         widget=forms.Select(
-#             attrs={'class': 'custom-select custom-select-md'}), 
-#         queryset=dim_roaster.objects.all())
-
-#     class Meta:
-#         model = dim_roaster
-#         fields = ['name']
-
-    # def __init__(self, *args, **kwargs):
-    #     roasters=[]
-    #     for k in dim_roaster.objects.values('roaster_id', 'name'):
-    #         a = (k['roaster_id'], k['name'])
-    #         roasters.append(a)
-    #     super(roasterForm, self).__init__(*args, **kwargs)
-    #     self.fields['name'].choices = roasters
-
 
 class coffeeForm(forms.ModelForm):
 
