@@ -23,7 +23,12 @@
     <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/coffee.css' %}">
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    {% block stylesheet %}{% endblock %}
+    
+    {% block stylesheet %}
+    <!--Chart js-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" integrity="sha256-Uv9BNBucvCPipKQ2NS9wYpJmi8DTOEfTA/nH2aoJALw=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css" integrity="sha256-aa0xaJgmK/X74WM224KMQeNQC2xYKwlAt08oZqjeF0E=" crossorigin="anonymous" />
+    {% endblock %}
 
 
 </head>
@@ -54,8 +59,9 @@
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" 
-                                data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown">
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                                aria-controls="navbarNavDropdown">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ user.username }}</span>
                                 <span class="navbar-toggler-icon"></span>
                             </a>
@@ -95,28 +101,30 @@
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-                {% block content %}
+                    {% block content %}
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-start mb-4">
-                            <span class="mr-2"><a href="{% url 'select_roaster'%}" class="d-sm-inline-block btn btn-md btn-primary shadow-sm"><i
-                                        class="fas fa-download fa-sm text-white-50"></i> Rate Coffee</a></span>
-                            <span class="mr-2" > <a href="{% url 'user_coffees'%}" class="d-sm-inline-block btn btn-md btn-light border border-primary shadow-sm"><i
-                                        class="fas fa-download fa-sm text-white-50"></i> My Coffee List</a></span>
+                        <span class="mr-2"><a href="{% url 'select_roaster'%}"
+                                class="d-sm-inline-block btn btn-md btn-primary shadow-sm"><i
+                                    class="fas fa-download fa-sm text-white-50"></i> Rate Coffee</a></span>
+                        <span class="mr-2"> <a href="{% url 'user_coffees'%}"
+                                class="d-sm-inline-block btn btn-md btn-light border border-primary shadow-sm"><i
+                                    class="fas fa-download fa-sm text-white-50"></i> My Coffee List</a></span>
                     </div>
 
                     <!-- Content Row -->
                     <div class="row">
 
-                        <!-- Coffee Counts -->
+                        <!-- Ratings Counts -->
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-primary shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                Number of Coffees</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{counts}}</div>
+                                                Number of Ratings</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{num_ratings}}</div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -126,15 +134,33 @@
                             </div>
                         </div>
 
-                        <!-- Earnings (Monthly) Card Example -->
+                        <!-- Coffee Counts -->
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-primary shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                Number of Coffees</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{num_coffees}}</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Roasters Counts -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                 Number of Roasters</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">9</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{num_roasters}}</div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -224,7 +250,7 @@
                         </div>
                     </div>
 
-                {% endblock content %}               
+                    {% endblock content %}
                 </div>
                 <!-- /.container-fluid -->
 
@@ -276,8 +302,11 @@
     <!-- Bootstrap core JavaScript-->
     <!-- <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script> -->
     <!-- <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script> -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous">
+    </script>
     <!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-eMNCOe7tC1doHpGoWe/6oMVemdAVTMs2xqW4mwXrXsW0L84Iytr2wi5v2QjrP/xp" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js" integrity="sha384-cn7l7gDp0eyniUwwAZgrzD06kc/tftFf19TOAs2zVinnD/C7E91j9yyk5//jjpt/" crossorigin="anonymous"></script> -->
 
@@ -288,12 +317,13 @@
     <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
 
     {% block javascript %}
-        <!-- Page level plugins -->
-        <script src="{% static 'vendor/chart.js/Chart.min.js' %}"></script>
+    <!-- Page level plugins -->
+    <script src="{% static 'vendor/chart.js/Chart.min.js' %}"></script>
 
-        <!-- Page level custom scripts -->
-        <script src="{% static 'js/demo/chart-area-demo.js' %}"></script>
-        <script src="{% static 'js/demo/chart-pie-demo.js' %}"></script>
+    <!-- Page level custom scripts -->
+    <script src="{% static 'js/demo/chart-area-demo.js' %}"></script>
+    <script src="{% static 'js/demo/chart-pie-demo.js' %}"></script>
+    
     {% endblock javascript %}
 </body>
 

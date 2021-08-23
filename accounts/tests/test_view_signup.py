@@ -6,6 +6,14 @@ from django.contrib.auth.forms import UserCreationForm
 from ..forms import SignUpForm
 
 # Create your tests here.
+
+class SignUpFormTest(TestCase):
+    def test_form_has_fields(self):
+        form = SignUpForm()
+        expected = ['username', 'email', 'password1', 'password2',]
+        actual = list(form.fields)
+        self.assertSequenceEqual(expected, actual)
+
 class SignUpTests(TestCase):
     def setUp(self):
         url = reverse('signup')
@@ -49,7 +57,7 @@ class SuccessfulSignUpTests(TestCase):
             'password2': 'abcdef123456'
         }
         self.response = self.client.post(url, data)
-        self.home_url = reverse('user_home', {'username':'Django'})
+        self.home_url = reverse('home')
 
     def test_redirection(self):
         '''
