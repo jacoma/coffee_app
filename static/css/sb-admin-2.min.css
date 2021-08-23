@@ -2693,37 +2693,37 @@ fieldset:disabled a.btn {
 
 .btn-primary {
     color: #fff;
-    background-color: #4e73df;
-    border-color: #4e73df
+    background-color: #2F5061;
+    border-color: #2F5061
 }
 
 .btn-primary:hover {
     color: #fff;
-    background-color: #2e59d9;
-    border-color: #2653d4
+    background-color: #618293;
+    border-color: #cacaca
 }
 
 .btn-primary.focus,
 .btn-primary:focus {
     color: #fff;
-    background-color: #2e59d9;
-    border-color: #2653d4;
+    background-color: #618293;
+    border-color: #618293;
     box-shadow: 0 0 0 .2rem rgba(105, 136, 228, .5)
 }
 
 .btn-primary.disabled,
 .btn-primary:disabled {
     color: #fff;
-    background-color: #4e73df;
-    border-color: #4e73df
+    background-color: #2F5061;
+    border-color: #2F5061
 }
 
 .btn-primary:not(:disabled):not(.disabled).active,
 .btn-primary:not(:disabled):not(.disabled):active,
 .show>.btn-primary.dropdown-toggle {
     color: #fff;
-    background-color: #2653d4;
-    border-color: #244ec9
+    background-color: #618293;
+    border-color: #618293
 }
 
 .btn-primary:not(:disabled):not(.disabled).active:focus,
@@ -3020,14 +3020,14 @@ fieldset:disabled a.btn {
 }
 
 .btn-outline-primary {
-    color: #4e73df;
-    border-color: #4e73df
+    color: #2F5061;
+    border-color: #2F5061
 }
 
 .btn-outline-primary:hover {
     color: #fff;
-    background-color: #4e73df;
-    border-color: #4e73df
+    background-color: #2F5061;
+    border-color: #2F5061
 }
 
 .btn-outline-primary.focus,
@@ -3037,7 +3037,7 @@ fieldset:disabled a.btn {
 
 .btn-outline-primary.disabled,
 .btn-outline-primary:disabled {
-    color: #4e73df;
+    color: #2F5061;
     background-color: transparent
 }
 
@@ -3045,8 +3045,8 @@ fieldset:disabled a.btn {
 .btn-outline-primary:not(:disabled):not(.disabled):active,
 .show>.btn-outline-primary.dropdown-toggle {
     color: #fff;
-    background-color: #4e73df;
-    border-color: #4e73df
+    background-color: #2F5061;
+    border-color: #2F5061
 }
 
 .btn-outline-primary:not(:disabled):not(.disabled).active:focus,
@@ -7157,7 +7157,7 @@ button.bg-dark:hover {
 }
 
 .border-primary {
-    border-color: #4e73df !important
+    border-color: #2F5061 !important
 }
 
 .border-secondary {
@@ -10757,12 +10757,12 @@ button.bg-dark:hover {
 }
 
 .text-primary {
-    color: #4e73df !important
+    color: #2F5061 !important
 }
 
 a.text-primary:focus,
 a.text-primary:hover {
-    color: #224abe !important
+    color: #618293 !important
 }
 
 .text-secondary {
