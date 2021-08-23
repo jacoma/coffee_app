@@ -1,25 +1,31 @@
-from django.shortcuts import render, redirect, get_object_or_404, reverse
+from django.shortcuts import render, redirect, reverse
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
 from .forms import SignUpForm
 from coffee.models import ratings, dim_coffee
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import UpdateView
 from django.db.models import Count
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import authentication
 
 # Create your views here.
 def home(request):
     if request.user.is_authenticated:
+        # labels = ["Direct", "Referral", "Social"]
+        # data = [55, 30, 15]
         context = ratings.objects.filter(user_id=request.user)
         num_ratings = context.count()
         num_coffees = context.values('coffee__coffee_id').distinct().count()
         num_roasters = context.values('coffee__roaster__roaster_id').distinct().count()
         pie_qs = context.values('coffee__country__name').annotate(count=Count('coffee__country__name'))
+        labels = pie_qs.values_list('coffee__country__name', flat = True).distinct()
+        data = pie_qs.values_list('count', flat = True).distinct()
         base_url = 'user/{username}/'.format(username=request.user.username)
         if request.method=='POST':
             if request.POST.get('my_coffee'):
@@ -33,12 +39,33 @@ def home(request):
                 'num_ratings':num_ratings, 
                 'num_coffees':num_coffees, 
                 'num_roasters':num_roasters,
-                'pie_qs':pie_qs
+                'labels':labels,
+                'data':data
                 })
     else:
         return HttpResponseRedirect(
                 reverse(signup)
             )
+
+class ChartData(APIView):
+    authentication_classes = [authentication.SessionAuthentication, authentication.BasicAuthentication]
+    permission_classes = []
+
+    def get(self, request, format=None):
+        """
+        Return counts per country for Chart.js pie chart
+        """
+        context = ratings.objects.filter(user_id=request.user)
+        pie_qs = context.values('coffee__country__name').annotate(count=Count('coffee__country__name'))
+        labels = pie_qs.values_list('coffee__country__name', flat = True).distinct()
+        data = pie_qs.values_list('count', flat = True).distinct()
+        # labels = ["Direct", "Referral", "Social"]
+        # data = [55, 30, 15]
+        my_context = {
+            'labels': labels,
+            'data': data
+        }
+        return Response(my_context)
 
 def signup(request):
     if request.method == 'POST':
