@@ -17,6 +17,7 @@ INSTALLED_APPS = [
     'accounts',
     'widget_tweaks',
     'storages',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
