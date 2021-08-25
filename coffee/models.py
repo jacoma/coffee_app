@@ -11,6 +11,8 @@ class countries(models.Model):
     name_long= models.CharField(max_length = 200, null=True)	
     latitude= models.FloatField(null=True)	
     longitude= models.FloatField(null=True)
+    region = models.CharField(max_length=200, null=True)
+    subregion =  models.CharField(max_length=200, null=True)
 
     def __str__(self):
         return self.name
@@ -21,6 +23,8 @@ class countries(models.Model):
 class dim_roaster(models.Model):
     roaster_id = models.AutoField(primary_key=True, unique=True)
     name = models.CharField(max_length = 200, null=True)
+
+
 
     def __str__(self):
         return self.name
@@ -66,7 +70,7 @@ class dim_coffee(models.Model):
     farmer = models.CharField(max_length = 200, null = True, blank=True)
     country = models.ForeignKey(countries, to_field='country_code', null=True, on_delete=models.SET_NULL, related_name="coffees")
     # region = models.CharField(max_length = 50, null = True)
-    varietals = models.ManyToManyField(dim_varietal, related_name = 'varieties')
+    varietals = models.ManyToManyField(dim_varietal, related_name = 'varieties', blank=True)
     process = models.CharField(
         max_length=20,
         choices=coffeeProcess.choices,
@@ -111,7 +115,7 @@ class ratings(models.Model):
         SIPHON = 'Siphon', ('Siphon')
 
     rating_id = models.AutoField(primary_key=True)
-    coffee = models.ForeignKey(dim_coffee, null=True, on_delete=models.DO_NOTHING, to_field='coffee_id', related_name='rate')
+    coffee = models.ForeignKey(dim_coffee, null=True, on_delete=models.DO_NOTHING, to_field='coffee_id', related_name='ratings', related_query_name='ratings')
     brew_method = models.CharField(
         max_length=25,
         choices=brewMethod.choices,
@@ -138,7 +142,8 @@ class ratings(models.Model):
     rating = models.IntegerField(
         choices = coffeeRating.choices, null=True
         )
-    last_updated = models.DateTimeField(auto_now_add=True)
+    rating_date = models.DateField(null=True, editable=True)
+    last_updated = models.DateTimeField(auto_now=True)
     user_id = models.ForeignKey(User, default='', null=True, blank=True, on_delete=models.SET_NULL)
 
     class Meta:

@@ -7,6 +7,15 @@ from .models import *
 # RATE COFFEE FORMS
 ###
 
+rating_choices = [
+    ('', 'Select a Rating'),
+    (1, 'No'),
+    (2, 'Tolerable'),
+    (3, 'Good'),
+    (4, 'Like'),
+    (5, 'Love')
+    ]
+
 class roasterForm(forms.ModelForm):
 
     class Meta:
@@ -56,13 +65,11 @@ class RatingForm3(forms.ModelForm):
 class RatingForm5(forms.ModelForm):
     class Meta:
         model = ratings
-        fields = ['rating', 'reaction']
+        fields = ['rating', 'reaction', 'rating_date']
 
-    rating=forms.ModelChoiceField(
-        queryset=ratings.objects.all(),
-        empty_label="What did you think?",
+    rating=forms.ChoiceField(
+        choices=rating_choices,
         label="",
-        to_field_name="rating",
         error_messages={'required': 'Please give it a rating.'},
         required=True
     )

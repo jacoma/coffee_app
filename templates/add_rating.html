@@ -4,6 +4,7 @@
 
 {% block stylesheet %}
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.css" integrity="sha256-b88RdwbRJEzRx95nCuuva+hO5ExvXXnpX+78h8DjyOE=" crossorigin="anonymous" />
 {% endblock %}
 
 {% block content %}
@@ -52,8 +53,8 @@
     </div>
 </div>
 {% endblock %}
-{% if 'ratingStep==0'%}
   {% block javascript %}
+  {% if rate_roasterStep %}
     <!-- Select 2-->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
     <script>
@@ -61,6 +62,13 @@
         $('#id_name').select2();
       });
     </script>
-  {% endblock %}
-{% endif %}
+  {% elif rate_finalStep%}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.js" integrity="sha256-/7FLTdzP6CfC1VBAj/rsp3Rinuuu9leMRGd354hvk0k=" crossorigin="anonymous"></script>
+  <script>
+    $(function () {
+      $("#id_rating_date").datepicker();
+    });
+  </script>
+  {% endif %}
+{% endblock %}
 

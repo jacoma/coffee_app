@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, reverse
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.models import User
 from .forms import SignUpForm
-from coffee.models import ratings, dim_coffee
+from coffee.models import *
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
@@ -23,10 +23,6 @@ def home(request):
         num_ratings = context.count()
         num_coffees = context.values('coffee__coffee_id').distinct().count()
         num_roasters = context.values('coffee__roaster__roaster_id').distinct().count()
-        pie_qs = context.values('coffee__country__name').annotate(count=Count('coffee__country__name'))
-        labels = pie_qs.values_list('coffee__country__name', flat = True).distinct()
-        data = pie_qs.values_list('count', flat = True).distinct()
-        base_url = 'user/{username}/'.format(username=request.user.username)
         if request.method=='POST':
             if request.POST.get('my_coffee'):
                 return redirect(reverse('user_coffees'))
@@ -38,9 +34,7 @@ def home(request):
             {
                 'num_ratings':num_ratings, 
                 'num_coffees':num_coffees, 
-                'num_roasters':num_roasters,
-                'labels':labels,
-                'data':data
+                'num_roasters':num_roasters
                 })
     else:
         return HttpResponseRedirect(
@@ -56,11 +50,27 @@ class ChartData(APIView):
         Return counts per country for Chart.js pie chart
         """
         context = ratings.objects.filter(user_id=request.user)
-        pie_qs = context.values('coffee__country__name').annotate(count=Count('coffee__country__name'))
-        labels = pie_qs.values_list('coffee__country__name', flat = True).distinct()
-        data = pie_qs.values_list('count', flat = True).distinct()
-        # labels = ["Direct", "Referral", "Social"]
-        # data = [55, 30, 15]
+        pie_qs = countries.objects.values('region').order_by('region').annotate(num_country=Count('name'), num_coffees=Count('coffees__name'), num_ratings=Count('coffees__ratings__rating_id'))
+        labels = pie_qs.values_list('region', flat = True).distinct()
+        data = pie_qs.values_list('num_ratings', flat = True).distinct()
+        my_context = {
+            'labels': labels,
+            'data': data
+        }
+        return Response(my_context)
+
+class lineData(APIView):
+    authentication_classes = [authentication.SessionAuthentication, authentication.BasicAuthentication]
+    permission_classes = []
+
+    def get(self, request, format=None):
+        """
+        Return counts per country for Chart.js pie chart
+        """
+        context = ratings.objects.filter(user_id=request.user)
+        qs = context.values('rating_date').order_by('rating_date').annotate(num_ratings=Count('rating_id'))
+        labels = qs.values_list('rating_date', flat = True).distinct()
+        data = qs.values_list('num_ratings', flat = True).distinct()
         my_context = {
             'labels': labels,
             'data': data
