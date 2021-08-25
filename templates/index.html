@@ -181,7 +181,7 @@
                                 <!-- Card Header - Dropdown -->
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Number of Ratings by Month</h6>
                                     <div class="dropdown no-arrow">
                                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -200,7 +200,7 @@
                                 <!-- Card Body -->
                                 <div class="card-body">
                                     <div class="chart-area">
-                                        <canvas id="myAreaChart"></canvas>
+                                        <canvas id="myAreaChart" data-url='{% url "api-data-area" %}'></canvas>
                                     </div>
                                 </div>
                             </div>
@@ -231,7 +231,7 @@
                                 <!-- Card Body -->
                                 <div class="card-body">
                                     <div class="chart-pie pt-4 pb-2">
-                                        <canvas id="myPieChart" data-url='{% url "api-data" %}'></canvas>
+                                        <canvas id="myPieChart" data-url='{% url "api-data-pie" %}'></canvas>
                                     </div>
                                     <div class="mt-4 text-center small">
                                         <span class="mr-2">
@@ -310,65 +310,13 @@
 
     {% block javascript %}
     <!-- Page level plugins -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" integrity="sha256-Uv9BNBucvCPipKQ2NS9wYpJmi8DTOEfTA/nH2aoJALw=" crossorigin="anonymous"></script>
 
     {% block chart %}
     <script src="{% static 'js/demo/chart-area-demo.js' %}"></script>
     <script src="{% static 'js/demo/chart-pie-demo.js' %}"></script>
-        <!-- <script>
-        $(document).ready(function(){
-            var $pieChart = $("#myPieChart");
-            $.ajax({
-                method: "GET",
-                url: $pieChart.data("url"),
-                success: function(data) {
-                    labels = data.labels
-                    defaultData = data.data
-                    setChart()
-                },
-                error: function (error_data) {
-                    console.log("error")
-                    console.log(error_data)
-
-                }
-            })
-            // Pie Chart Example
-            function setChart(){
-                var ctx = $pieChart[0].getContext('2d');
-                new Chart(ctx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            data: defaultData,
-                            backgroundColor: ['#2F5061', '#E57F84', '#4297A0', '#D6CCC8'],
-                            hoverBackgroundColor: ['#618293', '#FFB1B6', '#74C9D2', '#F4EAE6'],
-                            hoverBorderColor: "rgba(234, 236, 244, 1)",
-                        }],
-                    },
-                    options: {
-                        maintainAspectRatio: false,
-                        tooltips: {
-                        backgroundColor: "rgb(255,255,255)",
-                        bodyFontColor: "#858796",
-                        borderColor: '#dddfeb',
-                        borderWidth: 1,
-                        xPadding: 15,
-                        yPadding: 15,
-                        displayColors: false,
-                        caretPadding: 10,
-                        },
-                        legend: {
-                        display: false
-                        },
-                        cutoutPercentage: 80,
-                    },
-                });
-            }
-        });
-        </script>    -->
     {% endblock chart %}
-    
     {% endblock javascript %}
 </body>
 

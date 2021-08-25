@@ -50,14 +50,27 @@ class ChartData(APIView):
         Return counts per country for Chart.js pie chart
         """
         context = ratings.objects.filter(user_id=request.user)
-#        User.objects.annotate(
-#   tasks_cnt=Count('tasks'),  # all tasks count
-#   active_tasks_cnt=Count('task_set', filter=Q(status=TaskStatus.IN_PROGRESS)),
-#   hours_spent=Sum('tasks__hours_spent'),  # hours spent on all tasks
-# )
         pie_qs = countries.objects.values('region').order_by('region').annotate(num_country=Count('name'), num_coffees=Count('coffees__name'), num_ratings=Count('coffees__ratings__rating_id'))
         labels = pie_qs.values_list('region', flat = True).distinct()
         data = pie_qs.values_list('num_ratings', flat = True).distinct()
+        my_context = {
+            'labels': labels,
+            'data': data
+        }
+        return Response(my_context)
+
+class lineData(APIView):
+    authentication_classes = [authentication.SessionAuthentication, authentication.BasicAuthentication]
+    permission_classes = []
+
+    def get(self, request, format=None):
+        """
+        Return counts per country for Chart.js pie chart
+        """
+        context = ratings.objects.filter(user_id=request.user)
+        qs = context.values('rating_date').order_by('rating_date').annotate(num_ratings=Count('rating_id'))
+        labels = qs.values_list('rating_date', flat = True).distinct()
+        data = qs.values_list('num_ratings', flat = True).distinct()
         my_context = {
             'labels': labels,
             'data': data

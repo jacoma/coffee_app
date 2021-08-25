@@ -70,7 +70,7 @@ class dim_coffee(models.Model):
     farmer = models.CharField(max_length = 200, null = True, blank=True)
     country = models.ForeignKey(countries, to_field='country_code', null=True, on_delete=models.SET_NULL, related_name="coffees")
     # region = models.CharField(max_length = 50, null = True)
-    varietals = models.ManyToManyField(dim_varietal, related_name = 'varieties')
+    varietals = models.ManyToManyField(dim_varietal, related_name = 'varieties', blank=True)
     process = models.CharField(
         max_length=20,
         choices=coffeeProcess.choices,
@@ -142,7 +142,8 @@ class ratings(models.Model):
     rating = models.IntegerField(
         choices = coffeeRating.choices, null=True
         )
-    last_updated = models.DateTimeField(auto_now_add=True)
+    rating_date = models.DateField(null=True, editable=True)
+    last_updated = models.DateTimeField(auto_now=True)
     user_id = models.ForeignKey(User, default='', null=True, blank=True, on_delete=models.SET_NULL)
 
     class Meta:

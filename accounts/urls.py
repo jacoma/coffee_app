@@ -27,5 +27,6 @@ urlpatterns = [
     path('reset/complete/',
         auth_views.PasswordResetCompleteView.as_view(template_name='password_reset_complete.html'),
         name='password_reset_complete'),
-    path('api/chart/pie', views.ChartData.as_view(), name='api-data'),
+    path('api/chart/pie', views.ChartData.as_view(), name='api-data-pie'),
+    path('api/chart/area', views.lineData.as_view(), name='api-data-area'),
 ]

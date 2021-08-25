@@ -1,4 +1,5 @@
 coffee-env/
+my_coffee/
 .vscode
 .env
 db.sqlite3

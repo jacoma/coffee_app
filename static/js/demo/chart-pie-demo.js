@@ -27,8 +27,8 @@ $(document).ready(function(){
                 labels: labels,
                 datasets: [{
                     data: defaultData,
-                    backgroundColor: ['#2F5061', '#E57F84', '#4297A0', '#D6CCC8'],
-                    hoverBackgroundColor: ['#618293', '#FFB1B6', '#74C9D2', '#F4EAE6'],
+                    backgroundColor: ['#2F5061', '#4297a0', '#4297A0', '#D6CCC8'],
+                    hoverBackgroundColor: ['#618293', '#6e9da2', '#74C9D2', '#F4EAE6'],
                     hoverBorderColor: "rgba(234, 236, 244, 1)",
                 }],
             },

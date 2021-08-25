@@ -146,7 +146,7 @@ class selectBrew(FormView):
 
         """ Adds to the context the roaster for the 'Add Coffee' button; also sets form-step to 1 """
         context = super().get_context_data(**kwargs)
-        context["ratingStep"] = 2
+        context["rate_brewStep"] = True
         return context
 
 @method_decorator(login_required, name='dispatch')
