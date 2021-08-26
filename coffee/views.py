@@ -77,7 +77,7 @@ class selectRoaster(FormView):
         Takes the POST data from the Roaster Form and stores it in the session
         """
         form.save(commit = False)
-        self.request.session["roaster"] = form.cleaned_data["name"].name
+        self.request.session["roaster"] = form.cleaned_data["name"].roaster_id
         return super(selectRoaster, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
@@ -102,16 +102,21 @@ class selectCoffee(FormView):
         form = self.get_form()
 
         """ If 'Add Coffee' clicked, then capture roaster and direct to 'Add Coffee' URL"""
-        if request.POST.get('roaster'):
+        if request.POST.get('add_coffee'):
+            print('add coffee button value: ', request.POST.get('add_coffee'))
             ### Set session variable to selected roaster in previous step.
-            self.request.session['create_coffee_roaster']=request.POST.get('roaster')
+            self.request.session['create_coffee_roasterId']=request.POST.get('add_coffee')
             ### Set session variable to next step after coffee is created.
             self.request.session['redirect_url']='select_brew'
             return redirect(reverse('add_coffee1'))
         ### If form is valid, capture the roaster and coffee names for the final form submit
         else:
             if form.is_valid():
-                self.request.session["rate_coffee"]=form.cleaned_data['coffee'].coffee_id
+                self.request.session["rate_coffeeId"]=form.cleaned_data['coffee'].coffee_id
+
+                # DELETE 'roaster' SESSION VARIABLE SET IN THE 'select_roaster' STAGE
+                del self.request.session['roaster']
+
                 return self.form_valid(form)
             else:
                 return self.form_invalid(form)
@@ -157,12 +162,13 @@ class selectRating(FormView):
     success_url=reverse_lazy('user_coffees')
 
     def form_valid(self, form):
-        coffee_x = dim_coffee.objects.get(coffee_id = self.request.session["rate_coffee"])
+        coffee_x = dim_coffee.objects.get(coffee_id = self.request.session["rate_coffeeId"])
         rate = ratings(
             coffee = coffee_x,
             brew_method = self.request.session["rate_brew"],
             reaction = form.cleaned_data['reaction'],
             rating = form.cleaned_data['rating'],
+            rating_date = form.cleaned_data['rating_date'],
             user_id=self.request.user
         )
 
@@ -170,7 +176,8 @@ class selectRating(FormView):
 
         # DELETE SESSION VARIABLES
         del self.request.session["rate_brew"]
-        del self.request.session["rate_coffee"]
+        if self.request.session.get('rate_coffee', None):
+            del self.request.session["rate_coffee"]
 
         return super(selectRating, self).form_valid(form)
 
@@ -184,10 +191,9 @@ class selectRating(FormView):
 # CREATE ROASTER
 ##
 @method_decorator(login_required, name='dispatch')
-class roasterCreate(CreateView):
+class roasterCreate(FormView):
     template_name = "add_coffee.html"
-    model = dim_roaster
-    fields = ['name']
+    form_class = createRoasterForm
     success_url=reverse_lazy('add_coffee1')
 
     def post(self, request, *args, **kwargs):
@@ -199,10 +205,23 @@ class roasterCreate(CreateView):
 
         """ If 'Add Coffee' clicked, then capture roaster and direct to 'Add Coffee' URL"""
         if form.is_valid():
-                self.request.session['create_coffee_roaster']=form.cleaned_data['name']
-                return self.form_valid(form)
+            return self.form_valid(form)
         else:
             return self.form_invalid(form)
+
+    def form_valid(self, form):
+        form.save(commit=False)
+        roaster = dim_roaster(
+            name = form.cleaned_data['name']
+        )
+        roaster.save()
+        self.request.session['create_coffee_roaster']=roaster.name
+        self.request.session['create_coffee_roasterId']=roaster.roaster_id
+
+        # DELETE SESSION VARIABLES
+
+        # RETURN FORM_VALID
+        return super(roasterCreate, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
         """ Adds to the context the roaster for the 'Add Coffee' button; also sets form-step to 1 """
@@ -224,7 +243,12 @@ class coffeeCreate1(FormView):
     def get_context_data(self, **kwargs):
         """ Adds to the context the roaster for the 'Add Coffee' button; also sets form-step to 1 """
         context = super().get_context_data(**kwargs)
+
+        # IF CREATE_COFFEE_ROASTER EXISTS, ADD CONTEXT TO REMOVE "Add Roaster" BUTTON
+        if self.request.session.get('create_coffee_roasterId', None):
+            context['hasRoaster'] = True
         context["roasterStep"] = True
+        
         return context
 
     def get_form_kwargs(self, step=None):
@@ -235,13 +259,12 @@ class coffeeCreate1(FormView):
         # pre-populate form if someone goes back and forth between forms
         initial = super(coffeeCreate1, self).get_initial()
         initial = initial.copy()
-        roaster = self.request.session.get('create_coffee_roaster', None) 
+        roaster = self.request.session.get('create_coffee_roasterId', None) 
         if roaster == None:
             return initial
         else:
-            roaster = dim_roaster.objects.filter(name=self.request.session['create_coffee_roaster']).values_list('roaster_id', flat=True)[0]
+            roaster = dim_roaster.objects.filter(roaster_id=self.request.session['create_coffee_roasterId']).values_list('roaster_id', flat=True)[0]
             initial['roaster'] = roaster
-            del self.request.session['create_coffee_roaster']
             return initial
 
     def post(self, request, *args, **kwargs):
@@ -262,6 +285,7 @@ class coffeeCreate1(FormView):
                 return self.form_invalid(form)
 
     def form_valid(self, form):
+        self.request.session['rate_coffee'] = form.cleaned_data['name']
         return super(coffeeCreate1, self).form_valid(form)
 
 @method_decorator(login_required, name='dispatch')
@@ -278,6 +302,10 @@ class coffeeCreate2(FormView):
 
     def form_valid(self, form):
         form.save(commit=False)
+        self.request.session['rate_elevation'] = form.cleaned_data['elevation']
+        self.request.session['rate_farmer'] = form.cleaned_data['farmer']
+        self.request.session['rate_process']= form.cleaned_data['process']
+        self.request.session['rate_country']= form.cleaned_data['country'].country_code
         return super(coffeeCreate2, self).form_valid(form)
 
 @method_decorator(login_required, name='dispatch')
@@ -321,7 +349,7 @@ class coffeeCreate4(FormView):
 
             # OBTAIN OBJECTS FOR FOREIGNKEY VARIABLES
             varietals_x=dim_varietal.objects.filter(varietal__in=self.request.session['rate_varietals'])
-            roaster_x = dim_roaster.objects.get(roaster_id=self.request.session['rate_roaster'])
+            roaster_x = dim_roaster.objects.get(roaster_id=self.request.session['create_coffee_roasterId'])
             country_x = countries.objects.get(country_code=self.request.session['rate_country'])
             notes_x = form.cleaned_data['roaster_notes']
 
@@ -340,7 +368,7 @@ class coffeeCreate4(FormView):
             
             # DELETE SESSION VARIABLES
             del self.request.session['rate_varietals']
-            del self.request.session['rate_roaster']
+            del self.request.session['create_coffee_roasterId']
             del self.request.session['rate_country']
             del self.request.session['rate_elevation']
             del self.request.session['rate_farmer']
@@ -348,12 +376,14 @@ class coffeeCreate4(FormView):
 
             # SEND BACK TO RATING FLOW IF COMING FROM THERE (i.e. "redirect_url exists")
             if self.request.session.get('redirect_url', None):
-                rate = ratings.objects.create(coffee=self.request.session['rate_coffee'], user_id=self.request.user)
+                rate = ratings.objects.create(coffee=coffee, user_id=self.request.user)
                 self.request.session["rating_id"]=rate.rating_id
+                self.request.session["rate_coffeeId"]=coffee.coffee_id
                 self.success_url=reverse_lazy(self.request.session['redirect_url'])
                 
                 # DELETE SESSION VARIABLES BUT KEEP 'rate_coffee' FOR THE FINAL RATING OBJECT
                 del self.request.session['redirect_url']
+                del self.request.session['rate_coffee']
                 return self.form_valid(self)
             else:
                 # IF NOT SENDING BACK TO RATING, DELETE 'rate_coffee'

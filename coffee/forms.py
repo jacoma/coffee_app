@@ -39,12 +39,9 @@ class coffeeForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         select_roaster = kwargs.pop('roaster', None)
-        print(select_roaster)
-        queryset = dim_roaster.objects.get(name=select_roaster)
-        print(queryset)
+        queryset = dim_roaster.objects.get(roaster_id=select_roaster)
         if select_roaster:
             queryset = queryset.coffees.all()
-            print(queryset)
         super(coffeeForm, self).__init__(*args,**kwargs)
         self.fields['coffee'].queryset = queryset
         self.fields['coffee'].label = ""
@@ -77,6 +74,20 @@ class RatingForm5(forms.ModelForm):
     reaction = forms.CharField(
         label = 'Write your thoughts',
         required=False)
+
+###
+# CREATE ROASTER FORM
+###
+
+class createRoasterForm(forms.ModelForm):
+    class Meta:
+        model=dim_roaster
+        fields=['name']
+        error_messages = {
+            'name': {
+                'required': "Please give us a name for this coffee.",
+            }
+        }
 
 
 ###

@@ -27,7 +27,7 @@ class dim_roaster(models.Model):
 
 
     def __str__(self):
-        return self.name
+        return self.name or ''
 
     class Meta:
         ordering = ['name']
@@ -81,7 +81,7 @@ class dim_coffee(models.Model):
 
     def __str__(self):
         if self.name:
-            return self.name
+            return self.name or ' '
         return str("Coffee")+str(self.coffee_id)
 
     class Meta:
