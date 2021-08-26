@@ -28,7 +28,7 @@
                 </li>
             {% elif rate_coffeeStep %}
               <li>
-                <button name='roaster' value='{{roaster}}' formaction="{% url 'select_coffee'%}" class="d-sm-inline-block btn btn-md btn-light border border-primary shadow-sm">Add Coffee</button>
+                <button name='add_coffee' value='{{roaster}}' formaction="{% url 'select_coffee'%}" class="d-sm-inline-block btn btn-md btn-light border border-primary shadow-sm">Add Coffee</button>
               </li>
             {%else%}
               
