@@ -16,7 +16,7 @@ dataclasses==0.6
 defusedxml==0.7.1
 descartes==1.1.0
 diff-match-patch==20200713
-Django==3.2
+Django>=3.2.4
 django-appconf==1.0.4
 django-environ==0.4.5
 django-formtools==2.3
