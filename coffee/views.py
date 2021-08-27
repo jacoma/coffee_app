@@ -376,8 +376,11 @@ class coffeeCreate4(FormView):
 
             # SEND BACK TO RATING FLOW IF COMING FROM THERE (i.e. "redirect_url exists")
             if self.request.session.get('redirect_url', None):
-                rate = ratings.objects.create(coffee=coffee, user_id=self.request.user)
-                self.request.session["rating_id"]=rate.rating_id
+                # rate = ratings.objects.create(
+                #     coffee=coffee, 
+                #     user_id=self.request.user)
+
+                # self.request.session["rating_id"]=rate.rating_id
                 self.request.session["rate_coffeeId"]=coffee.coffee_id
                 self.success_url=reverse_lazy(self.request.session['redirect_url'])
                 

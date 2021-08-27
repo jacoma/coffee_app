@@ -56,6 +56,7 @@ class dim_coffee(models.Model):
     class coffeeProcess(models.TextChoices):
         WASHED = 'Washed', ('Washed')
         NATURAL = 'Natural', ('Natural')
+        ANAEROBIC_NATURAL = 'Anaerobic Natural', ('Anaerobic Natural')
         NATURAL_PULP = 'Pulp Natural', ('Pulp Natural')
         HONEY = 'Honey', ('Honey')
         YELLOW_HONEY = 'Yellow Honey', ('Yellow Honey')
