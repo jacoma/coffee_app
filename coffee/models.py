@@ -114,6 +114,7 @@ class ratings(models.Model):
         DRIP = 'Drip', ('Drip')
         CUPPING = 'Cupping', ('Cupping')
         SIPHON = 'Siphon', ('Siphon')
+        ESPRESSO = 'Espresso', ('Espresso')
 
     rating_id = models.AutoField(primary_key=True)
     coffee = models.ForeignKey(dim_coffee, null=True, on_delete=models.DO_NOTHING, to_field='coffee_id', related_name='ratings', related_query_name='ratings')
