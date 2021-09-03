@@ -49,8 +49,12 @@ class ChartData(APIView):
         """
         Return counts per country for Chart.js pie chart
         """
-        context = ratings.objects.filter(user_id=request.user)
-        pie_qs = countries.objects.values('region').order_by('region').annotate(num_country=Count('name'), num_coffees=Count('coffees__name'), num_ratings=Count('coffees__ratings__rating_id'))
+        context = countries.objects.filter(coffees__ratings__user_id=request.user)
+        pie_qs = context.values('region').order_by('region').annotate(
+            num_country=Count('name'),
+             num_coffees=Count('coffees__name'),
+              num_ratings=Count('coffees__ratings__rating_id')
+              )
         labels = pie_qs.values_list('region', flat = True).distinct()
         data = pie_qs.values_list('num_ratings', flat = True).distinct()
         my_context = {

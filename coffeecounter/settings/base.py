@@ -15,6 +15,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'coffee',
     'accounts',
+    'endpoints',
     'widget_tweaks',
     'storages',
     'rest_framework'

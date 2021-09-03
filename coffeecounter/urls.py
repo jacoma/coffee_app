@@ -17,9 +17,13 @@ from django.contrib import admin
 from django.urls import include, path
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path, include
+# from endpoints.urls import urlpatterns as endpoints_urlpatterns
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path(r'', include('coffee.urls')),
-    path(r'', include('accounts.urls'))
+    path(r'', include('accounts.urls')),
+    path(r'', include('endpoints.urls'))
 ]
+
+# urlpatterns += endpoints_urlpatterns
