@@ -21,9 +21,12 @@
     --teal: #20c9a6;
     --cyan: #36b9cc;
     --white: #fff;
-    --gray: #858796;
-    --gray-dark: #5a5c69;
-    --primary: #4e73df;
+    --gray: #a8aca6;
+    --gray-dark: #58585d;
+    --primary: #355a99;
+    --primary-rgb: 53,90,153;
+    --callout: #3e88a8;
+    --callout-rgb: 62,136,168;
     --secondary: #858796;
     --success: #1cc88a;
     --info: #36b9cc;
@@ -2693,37 +2696,49 @@ fieldset:disabled a.btn {
 
 .btn-primary {
     color: #fff;
-    background-color: #2F5061;
-    border-color: #2F5061
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-callout {
+    color: #fff;
+    background-color: var(--callout);
+    border-color: var(--callout);
+}
+
+.btn-callout:hover {
+    color: rgb(0, 0, 0);
+    background-color:  rgba(var(--callout), 0.6);
+    border-color: var(--callout);
 }
 
 .btn-primary:hover {
-    color: #fff;
-    background-color: #618293;
-    border-color: #cacaca
+    color: rgb(0, 0, 0);
+    background-color: rgba(var(--primary-rgb), 0.6);
+    border-color: var(--primary);
 }
 
 .btn-primary.focus,
 .btn-primary:focus {
-    color: #fff;
-    background-color: #618293;
-    border-color: #618293;
+    color: rgb(0, 0, 0);
+    background-color: rgba(var(--bs-primary-rgb), 0.6);
+    border-color: var(--primary);
     box-shadow: 0 0 0 .2rem rgba(105, 136, 228, .5)
 }
 
 .btn-primary.disabled,
 .btn-primary:disabled {
     color: #fff;
-    background-color: #2F5061;
-    border-color: #2F5061
+    background-color: var(--primary);
+    border-color: var(--primary);
 }
 
 .btn-primary:not(:disabled):not(.disabled).active,
 .btn-primary:not(:disabled):not(.disabled):active,
 .show>.btn-primary.dropdown-toggle {
     color: #fff;
-    background-color: #618293;
-    border-color: #618293
+    background-color: rgba(var(--bs-primary-rgb), 0.6);
+    border-color: var(--primary);
 }
 
 .btn-primary:not(:disabled):not(.disabled).active:focus,
@@ -11240,11 +11255,11 @@ a:focus {
 }
 
 .border-left-primary {
-    border-left: .25rem solid #4e73df !important
+    border-left: .25rem solid var(--primary) !important
 }
 
 .border-bottom-primary {
-    border-bottom: .25rem solid #4e73df !important
+    border-bottom: .25rem solid var(--primary) !important
 }
 
 .border-left-secondary {

@@ -3,6 +3,7 @@ from django.shortcuts import redirect, reverse
 from django.urls import reverse_lazy
 from coffee.models import *
 from coffee.forms import *
+from endpoints.ml.recommender import Recommendations
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import FormView, CreateView, ListView, UpdateView, DeleteView
@@ -172,7 +173,17 @@ class selectRating(FormView):
             user_id=self.request.user
         )
 
+        new_rating = {
+            'rating':form.cleaned_data['rating'],
+            'coffee_id':self.request.session["rate_coffeeId"],
+            'user_id': self.request.user
+        }
+
+        recs = Recommendations()
+        recs.create_recs(self.request.user, new_rating)
+
         rate.save()
+        print('New Rating Saved')
 
         # DELETE SESSION VARIABLES
         del self.request.session["rate_brew"]

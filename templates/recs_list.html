@@ -1,0 +1,39 @@
+{% extends 'index.html' %}
+{% block title %}My Ratings{% endblock %}
+{% block stylesheet %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+{% endblock %}
+
+{% block content %}
+<div class="table-responsive-sm" id='coffeeList'>
+  {% for rec in recs %}
+      <p>{{rec.last_updated}}</p>
+      {% endfor %}
+  <table id="coffeeTable" class="table table-hover">
+    <thead class="thead-inverse">
+      <tr>
+        <th scope="col">Roaster</th>
+        <th scope="col">Coffee</th>
+        <th scope="col">Country</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for rec in recs %}
+      <tr>
+        <td class="align-middle">{{rec.roaster.name}}</td>
+        <td class="align-middle">{{rec.name}}</td>
+        <td class="align-middle">{{rec.country.name}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
+{% block javascript %}
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+<script>
+  $(document).ready(function () {
+    $('#coffeeTable').DataTable();
+  });
+</script>
+{% endblock %}

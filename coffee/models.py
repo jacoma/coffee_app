@@ -50,7 +50,6 @@ class dim_varietal(models.Model):
     class Meta:
         ordering = ['varietal']
 
-# Create your models here.
 class dim_coffee(models.Model):
 
     class coffeeProcess(models.TextChoices):
@@ -123,24 +122,7 @@ class ratings(models.Model):
         choices=brewMethod.choices,
         null = True
         )
-
-    # tasting_notes = models.ManyToManyField(dim_notes)
     reaction = models.TextField(max_length=500, null=True)
-    # volume= models.IntegerField(
-    #     choices = ratings_scale.choices, null=True
-    #     )
-    # acidity= models.IntegerField(
-    #     choices = coffeeRating.choices, null=True
-
-    # sweetness= models.IntegerField(
-    #     choices = coffeeRating.choices, null=True
-    #     )
-    # complexity = models.IntegerField(
-    #     choices = coffeeRating.choices, null=True
-    #     )
-    # balance = models.IntegerField(
-    #     choices = coffeeRating.choices, null=True
-    #     )
     rating = models.IntegerField(
         choices = coffeeRating.choices, null=True
         )
@@ -151,4 +133,13 @@ class ratings(models.Model):
     class Meta:
         ordering = ['-last_updated']
 
+class recommendations(models.Model):
+    rec_id = models.AutoField(primary_key=True)
+    user_id = models.ForeignKey(User, default='', null=True, blank=True, on_delete=models.SET_NULL)
+    recs_set = models.IntegerField(null = True, blank=True)
+    rec_num = models.IntegerField(null = True, blank=True)
+    coffee = models.ForeignKey(dim_coffee, null=True, on_delete=models.DO_NOTHING, to_field='coffee_id', related_name='recs', related_query_name='recs')
+    score = models.FloatField(null = True, blank=True)
+    last_updated = models.DateTimeField(auto_now=True)
+    
 
