@@ -3,9 +3,6 @@ import numpy as np
 import os
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
-import nltk
-nltk.download('wordnet')
-nltk.download('punkt')
 from endpoints.ml.postgres_data import get_postgres_data, create_postgres_data
 from azure.storage.blob import BlockBlobService
 from io import StringIO
