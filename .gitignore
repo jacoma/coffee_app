@@ -1,5 +1,6 @@
 coffee-env/
-my_coffee/
+endpoints/my_coffee/
 .vscode
 .env
 db.sqlite3
+static/assets/img/

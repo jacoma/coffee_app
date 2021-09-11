@@ -24,11 +24,11 @@
               <ul>
             {% if rate_roasterStep %}
                 <li>
-                  <button name='add_roaster' value='add_roaster' formaction="{% url 'select_roaster'%}" class="d-sm-inline-block btn btn-md btn-light border border-primary shadow-sm">Add Roaster</button>
+                  <button name='add_roaster' value='add_roaster' formaction="{% url 'select_roaster'%}" class="d-sm-inline-block btn btn-md btn-light border border-primary shadow-sm">Add New Roaster</button>
                 </li>
             {% elif rate_coffeeStep %}
               <li>
-                <button name='add_coffee' value='{{roaster}}' formaction="{% url 'select_coffee'%}" class="d-sm-inline-block btn btn-md btn-light border border-primary shadow-sm">Add Coffee</button>
+                <button name='add_coffee' value='{{roaster}}' formaction="{% url 'select_coffee'%}" class="d-sm-inline-block btn btn-md btn-light border border-primary shadow-sm">Add New Coffee</button>
               </li>
             {%else%}
               

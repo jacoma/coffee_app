@@ -1,5 +1,8 @@
 from pathlib import Path
 import os
+import nltk
+nltk.download('wordnet')
+nltk.download('punkt')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = os.path.dirname(os.path.dirname(

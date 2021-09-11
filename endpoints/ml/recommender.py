@@ -3,9 +3,6 @@ import numpy as np
 import os
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
-import nltk
-nltk.download('wordnet')
-nltk.download('punkt')
 from endpoints.ml.postgres_data import get_postgres_data, create_postgres_data
 from azure.storage.blob import BlockBlobService
 from io import StringIO
@@ -190,9 +187,9 @@ class Recommendations:
     def top_recs(self, rate_df, jaccard_df, user_id):
         top_rated = rate_df[(rate_df['rating']>=5) & (rate_df['user_id_id'] == user_id)].coffee_id.unique()
 
-        my_recs = jaccard_df[jaccard_df['coffee_id'].isin(top_rated) & (jaccard_df.jaccard!=0)].sort_values(['coffee_id', 'jaccard'], ascending=False)
+        my_recs = jaccard_df[jaccard_df['coffee_id'].isin(top_rated) & (jaccard_df.jaccard!=0) & ~jaccard_df['coffee'].isin(rate_df.coffee_id.unique())].sort_values(['coffee_id', 'jaccard'], ascending=False)
 
-        final_recs = my_recs.sort_values(['jaccard'], ascending=False).head(10)
+        final_recs = my_recs.sort_values(['jaccard'], ascending=False).head(5)
         final_recs = final_recs.reset_index()
 
         return final_recs 

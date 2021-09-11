@@ -1,12 +1,12 @@
 
-#Full path and name to your csv file 
-csv_filepathname="C:\\Users\\jacoma\\source\\repos\\coffee_app\\roast.csv" 
-
 import csv
 from django.core.management import BaseCommand
 
 # Import the model 
 from coffee.models import *
+
+from endpoints.ml.postgres_data import get_postgres_data
+coffees = get_postgres_data('SELECT * FROM coffee_dim_coffee')
 
 
 ALREDY_LOADED_ERROR_MESSAGE = """
@@ -31,29 +31,52 @@ class Command(BaseCommand):
         # Show this before loading the data into the database
         print("Loading data")
 
+        coffee_ids = coffees.coffee_id.unique()
 
+        count = 0
         #Code to load the data into database
-        for row in csv.reader(open('C:/Users/jacoma/OneDrive - Microsoft/Desktop/data/mycoffee.csv')):
-            my_variety = row[5].split(", ")
-            my_notes = row[8].split(", ")
-            roaster_x=dim_roaster.objects.get(roaster_id=row[2])
-            country_x=countries.objects.get(country_code=row[4])
-            varietals_x=dim_varietal.objects.filter(varietal__in=my_variety)
-            notes_x=dim_notes.objects.filter(flavor_notes__in=my_notes)
+        for row in csv.reader(open('endpoints\my_coffee\data\/final_trade_coffee.csv', encoding='cp437')):
+         
+            if int(row[0]) in coffee_ids:            
+                r = dim_coffee.objects.get(coffee_id=int(row[0]))
 
-            if row[7] == '':
-                elevation_x = 0
-            evelvation_x = row[7]
+                r.tradeUrl = row[8]
+                r.storage_path = row[7]
 
-            coffee=dim_coffee(
-                coffee_id=row[0],
-                name=row[1],
-                roaster=roaster_x,
-                farmer=row[3],
-                country=country_x,
-                process=row[6],
-                elevation=evelvation_x)  
+                r.save(update_fields=['tradeUrl', 'storage_path'])
+            else:
+            
+                my_variety = row[6].split(", ")
+                my_notes = row[11].split(", ")
+                roaster_x=dim_roaster.objects.get(roaster_id=int(row[9]))
+                varietals_x=dim_varietal.objects.filter(varietal__in=my_variety)
+                notes_x=dim_notes.objects.filter(flavor_notes__in=my_notes)
 
-            coffee.save()
-            coffee.varietals.set(varietals_x)
-            coffee.roaster_notes.set(notes_x)
+                if row[3] == '':
+                    elevation_x = 0
+                evelvation_x = int(row[3])
+
+                coffee=dim_coffee(
+                    coffee_id=int(row[0]),
+                    name=row[1],
+                    roaster=roaster_x,
+                    farmer=row[3],
+                    process=row[6],
+                    elevation=evelvation_x,
+                    storage_path=row[7],
+                    tradeUrl=row[8]
+                    )  
+
+                if row[10] == '':
+                    print('')
+                else:
+                    coffee.country=countries.objects.get(country_code=int(row[10]))
+
+
+                coffee.save()
+                coffee.varietals.set(varietals_x)
+                coffee.roaster_notes.set(notes_x)
+
+                count+=1
+
+                print(count, "completed")
