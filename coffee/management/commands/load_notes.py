@@ -36,7 +36,7 @@ class Command(BaseCommand):
         #Code to load the data into database
         clean_words = [] 
     
-        for row in csv.reader(open('C:/Users/jacoma/OneDrive - Microsoft/Desktop/data/notes.csv')):
+        for row in csv.reader(open('endpoints\my_coffee\data\/new_notes.csv')):
             # To Lower
             words_lower = row[0].lower()
             

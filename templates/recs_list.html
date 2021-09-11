@@ -1,39 +1,45 @@
 {% extends 'index.html' %}
+{% load static %}
 {% block title %}My Ratings{% endblock %}
 {% block stylesheet %}
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
 {% endblock %}
 
 {% block content %}
-<div class="table-responsive-sm" id='coffeeList'>
+<div class='row'>
   {% for rec in recs %}
-      <p>{{rec.last_updated}}</p>
-      {% endfor %}
-  <table id="coffeeTable" class="table table-hover">
-    <thead class="thead-inverse">
-      <tr>
-        <th scope="col">Roaster</th>
-        <th scope="col">Coffee</th>
-        <th scope="col">Country</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for rec in recs %}
-      <tr>
-        <td class="align-middle">{{rec.roaster.name}}</td>
-        <td class="align-middle">{{rec.name}}</td>
-        <td class="align-middle">{{rec.country.name}}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  <div class="col-xl-4 col-md-6 col-sm-12">
+    <div class="card shadow mb-4">
+      <!-- Card Header - Dropdown -->
+      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <p class="m-0 text-primary">
+          <span class='font-weight-light'>{{rec.roaster.name}}</span>
+          <br>
+        <span class="m-0 font-weight-bold"> {{rec.name}}
+          </span>
+        </p>
+        <div class="card-buttons">
+          {% if rec.tradeUrl %}
+          <a href="{{rec.tradeUrl}}" class="d-sm-inline-block btn btn-sm btn-light border border-primary shadow-sm"><i
+              class="fas fa-download fa-sm text-white-50"></i> Buy on Trade</a>
+          {% elif rec.roaster.website %}
+          <a href="{{rec.roaster.website}}" class="d-sm-inline-block btn btn-sm btn-light border border-primary shadow-sm"><i
+            class="fas fa-download fa-sm text-white-50"></i> Buy from Roaster</a>
+          {% endif %}
+        </div>
+      </div>
+      <!-- Card Body -->
+      <div class="card-body">
+        <div class="card-img">
+          {% if rec.storage_path %}
+          <img src="{% static rec.storage_path %}">
+          {% else %}
+          <img src="{% static 'assets/img/CoffeeBag.JPG' %}">
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
 </div>
-{% endblock %}
-{% block javascript %}
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
-<script>
-  $(document).ready(function () {
-    $('#coffeeTable').DataTable();
-  });
-</script>
 {% endblock %}
