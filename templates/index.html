@@ -103,12 +103,15 @@
                         <span class="mr-2"><a href="{% url 'select_roaster'%}"
                                 class="d-sm-inline-block btn btn-md btn-callout shadow-sm"><i
                                     class="fas fa-download fa-sm text-white-50"></i> Rate Coffee</a></span>
+                        {% if num_ratings == 0 %}
+                        {% else %}
                         <span class="mr-2"> <a href="{% url 'user_coffees'%}"
                                 class="d-sm-inline-block btn btn-md btn-callout shadow-sm"><i
                                     class="fas fa-download fa-sm text-white-50"></i> My Coffee List</a></span>
                         <span class="mr-2"> <a href="{% url 'user_recs'%}"
                                 class="d-sm-inline-block btn btn-md btn-callout shadow-sm"><i
                                     class="fas fa-download fa-sm text-white-50"></i> My Recommendations</a></span>
+                        {% endif %}
                     </div>
 
                     <!-- Content Row -->
@@ -170,8 +173,9 @@
 
                     </div>
 
-                    <!-- Content Row -->
-
+                    <!-- CHART Row -->
+                    {% if num_ratings == 0 %}
+                    {% else %}
                     <div class="row">
 
                         <!-- Area Chart -->
@@ -247,6 +251,7 @@
                             </div>
                         </div>
                     </div>
+                    {% endif %}
 
                     {% endblock content %}
                 </div>
