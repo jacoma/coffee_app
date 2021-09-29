@@ -100,7 +100,7 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-start mb-4">
-                        <span class="mr-2"><a href="{% url 'select_roaster'%}"
+                        <span id='rate_btn' class="mr-2"><a href="{% url 'select_roaster'%}"
                                 class="d-sm-inline-block btn btn-md btn-callout shadow-sm"><i
                                     class="fas fa-download fa-sm text-white-50"></i> Rate Coffee</a></span>
                         {% if num_ratings == 0 %}
@@ -317,11 +317,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"
         integrity="sha256-Uv9BNBucvCPipKQ2NS9wYpJmi8DTOEfTA/nH2aoJALw=" crossorigin="anonymous"></script>
-
+    
     {% block chart %}
     <script src="{% static 'js/demo/chart-area-demo.js' %}"></script>
     <script src="{% static 'js/demo/chart-pie-demo.js' %}"></script>
     {% endblock chart %}
+
     {% endblock javascript %}
 </body>
 
