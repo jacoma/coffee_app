@@ -51,8 +51,8 @@ class Recommendations:
         #get recs
         recs = self.top_recs(ratings, jaccard, user.id)
 
-        latest_set = get_postgres_data(f'SELECT COALESCE(MAX(recs_set), 0) FROM coffee_recommendations WHERE user_id_id={user.id}')
-        new_set = latest_set+1
+        latest_set = get_postgres_data(f'SELECT COALESCE(MAX(recs_set), 0) AS "recs_set" FROM coffee_recommendations WHERE user_id_id={user.id}')
+        new_set = latest_set.recs_set+1
         
         for i in range(0, len(recs)):
             coffee_x = dim_coffee.objects.get(coffee_id = recs.iloc[i, 2])
@@ -62,7 +62,7 @@ class Recommendations:
                 rec_num = i,
                 coffee = coffee_x,
                 score = recs.iloc[i, 3],
-                recs_set_num=new_set
+                recs_set=new_set
             )
 
             rec.save()
@@ -87,6 +87,8 @@ class Recommendations:
         blob_string = blob_service.get_blob_to_text('coffeecontainer', 'notes_wheel.csv')
         all_notes = pd.read_csv(StringIO(blob_string.content))
 
+        print("Data Loaded")
+
         return notes, notes_noNA_coffee_df, all_notes, ratings
 
     def get_clean_notes(self, coffee_df, notes):
@@ -105,6 +107,8 @@ class Recommendations:
         )
 
         clean_notes = coffee_melt_df[coffee_melt_df['cleaned_note'].isna()==False]
+
+        print("Data Processed")
         
         return clean_notes
 
@@ -122,6 +126,8 @@ class Recommendations:
         sum_df = grouped_df.sum()
 
         j_scores_df = self.calculate_jaccard(sum_df)
+
+        print("Scores Processed")
 
         return j_scores_df
 
