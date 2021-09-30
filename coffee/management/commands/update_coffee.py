@@ -35,7 +35,7 @@ class Command(BaseCommand):
 
         count = 0
         #Code to load the data into database
-        for row in csv.reader(open('endpoints\my_coffee\data\/final_trade_coffee.csv', encoding='cp437')):
+        for row in csv.reader(open('endpoints\my_coffee\data\/updated_coffees.csv', encoding='cp437')):
          
             if int(row[0]) in coffee_ids:            
                 r = dim_coffee.objects.get(coffee_id=int(row[0]))
@@ -44,6 +44,26 @@ class Command(BaseCommand):
 
                 # varietals_x=dim_varietal.objects.filter(varietal__in=my_variety)
                 # notes_x=dim_notes.objects.filter(flavor_notes__in=my_notes)
+
+                if row[1] == '':
+                    print('Blank Country')
+                else:
+                    r.country=countries.objects.get(name=row[1])
+
+                if row[2] == '':
+                    print('Blank Farmer')
+                else:
+                    r.farmer=row[2]
+                
+                if row[3] == '':
+                    print('Blank Process')
+                else:
+                    r.process=row[3]
+
+                if row[4] == '':
+                    print('Blank Name')
+                else:
+                    r.name=row[4]
 
                 # r.varietals.set(varietals_x)
                 # r.roaster_notes.set(notes_x)
@@ -55,9 +75,9 @@ class Command(BaseCommand):
                 # r.farmer = row[4]
                 # r.process = row[5]
 
-                r.storage_path = '.'.join([row[7], 'jpg'])
+                # r.storage_path = '.'.join([row[7], 'jpg'])
 
-                r.save(update_fields=['storage_path'])
+                r.save(update_fields=['country', 'farmer', 'process'])
             else:
                 print('no item')
             

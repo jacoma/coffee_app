@@ -4,3 +4,7 @@ endpoints/my_coffee/
 .env
 db.sqlite3
 static/assets/img/
+static/js/aSimpleTour.js
+static/js/aSimpleTour.min.js
+static/js/myTour.js
+templates/tour.html

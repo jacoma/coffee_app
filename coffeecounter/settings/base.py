@@ -88,7 +88,10 @@ USE_L10N = True
 USE_TZ = True
 
 # Static Files
+DEFAULT_FILE_STORAGE = 'storages.backends.azure_storage.AzureStorage'
+# STATICFILES_STORAGE = 'custom_storage.custom_azure.PublicAzureStorage'
 STATIC_URL = '/static/'
+
 
 
 # Default primary key field type
