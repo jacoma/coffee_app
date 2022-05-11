@@ -1,4 +1,5 @@
-from django.conf.urls import url, include
+from django.urls import re_path
+from django.conf.urls import include
 from rest_framework.routers import DefaultRouter
 
 from endpoints.views import EndpointViewSet, MLAlgorithmViewSet, MLRequestViewSet
@@ -10,5 +11,5 @@ router.register(r"mlalgorithms", MLAlgorithmViewSet, basename="mlalgorithms")
 router.register(r"mlrequests", MLRequestViewSet, basename="mlrequests")
 
 urlpatterns = [
-    url(r"^api/v1/", include(router.urls)),
+    re_path(r"^api/v1/", include(router.urls)),
 ]

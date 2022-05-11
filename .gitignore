@@ -1,5 +1,6 @@
-coffee-env/
+.venv
 endpoints/my_coffee/
+endpoints/scratch
 .vscode
 .env
 db.sqlite3
