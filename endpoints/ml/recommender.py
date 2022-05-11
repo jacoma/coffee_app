@@ -34,22 +34,13 @@ class Recommendations:
 
     def create_recs(self, user, new_rating=None):
         #get data
-        notes, coffee_df, all_notes, ratings = self.get_data(user)
-        notes_3 = all_notes.Note_3
-
+        jaccard_scores, ratings = self.get_data(user)
+        
         if not new_rating==None:
             ratings.append(new_rating, ignore_index=True)
 
-        #get clean notes
-        clean_notes = self.get_clean_notes(coffee_df, notes_3)
-
-        complete_info = pd.merge(clean_notes, all_notes, how='left', left_on='cleaned_note', right_on='Note_3')
-
-        #get jaccard
-        jaccard = self.get_jaccard_scores(complete_info)
-
         #get recs
-        recs = self.top_recs(ratings, jaccard, user.id)
+        recs = self.top_recs(ratings, jaccard_scores, user.id)
 
         latest_set = get_postgres_data(f'SELECT COALESCE(MAX(recs_set), 0) AS "recs_set" FROM coffee_recommendations WHERE user_id_id={user.id}')
         new_set = latest_set.recs_set+1
@@ -71,25 +62,21 @@ class Recommendations:
 
 
     def get_data(self, user):
-        notes = get_postgres_data('SELECT * FROM coffee_dim_notes')
-
         ratings = get_postgres_data(f'SELECT rating, coffee_id, user_id_id FROM coffee_ratings WHERE user_id_id={user.id}')
-
-        coffee_df = get_postgres_data('SELECT * FROM coffees')
-
-        notes_coffee_df = coffee_df[['coffee_id', 'notes']]
-        notes_noNA_coffee_df = notes_coffee_df.dropna()
         
         blob_service = BlockBlobService( 
             account_name=os.getenv('AZ_STORAGE_NAME', None), 
             account_key=os.getenv('AZURE_ACCOUNT_KEY', None))
 
-        blob_string = blob_service.get_blob_to_text('coffeecontainer', 'notes_wheel.csv')
-        all_notes = pd.read_csv(StringIO(blob_string.content))
+        # blob_string = blob_service.get_blob_to_text('coffeecontainer', 'ml/recommendations/clean_notes.csv')
+        # clean_notes = pd.read_csv(StringIO(blob_string.content))
+
+        blob_string = blob_service.get_blob_to_text('coffeecontainer', 'ml/recommendations/coffee_jaccard_scores.csv')
+        jaccard_scores = pd.read_csv(StringIO(blob_string.content))
 
         print("Data Loaded")
 
-        return notes, notes_noNA_coffee_df, all_notes, ratings
+        return jaccard_scores, ratings
 
     def get_clean_notes(self, coffee_df, notes):
         matched_notes_df = self.match_notes(coffee_df, 0, 1, notes)
@@ -154,7 +141,6 @@ class Recommendations:
                 lem = ' '.join(lemmatized_words)
 
                 tok_list.append(list(self.words_in_string(notes_wheel_list, lem)))
-                # tok_list.append(list(words_in_string(notes_2, lem)))
 
                 for tok in tok_list:
                     notes_list.extend(tok)

@@ -2,8 +2,9 @@ from pathlib import Path
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__name__).resolve().parent
 
+SECRET_KEY = '#cq@8ls2j9h)(^k0*nj$a!7c9-mwef958q9&&*x5krj!@jlt_e'
 DEBUG=True
 
 ALLOWED_HOSTS=[]
