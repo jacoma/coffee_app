@@ -1,6 +1,8 @@
 .venv
 endpoints/my_coffee/
 endpoints/scratch
+endpoints/data/driver
+endpoints/data/tmp
 .vscode
 .env
 db.sqlite3
