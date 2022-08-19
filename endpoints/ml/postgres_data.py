@@ -1,17 +1,15 @@
 import psycopg2
-import os
 import pandas as pd
+from dotenv import dotenv_values
+config = dotenv_values(".env")
 
 ##******** LOAD DATABASE ********##
 
 def get_postgres_data(command):
     # Set up a connection to the postgres server.
-    conn_string = "host="+ os.getenv("DATABASE_HOST", None) +" port="+ "5432" +" dbname="+ os.getenv("DATABASE_NAME", None) +" user=" + os.getenv("DATABASE_USER", None) \
-    +" password="+ os.getenv("DATABASE_PASS", None)+" sslmode=require"
+    conn_string = "host="+ (config["DATABASE_HOST"] or None) +" port="+ "5432" +" dbname="+ (config["DATABASE_NAME"] or None) +" user=" + (config["DATABASE_USER"] or None) \
+    +" password="+ (config["DATABASE_PASS"] or None) +" sslmode=require"
     conn=psycopg2.connect(conn_string)
-
-    # Create a cursor object
-    cursor = conn.cursor()
 
     data = pd.read_sql(command, conn)
 
@@ -22,8 +20,8 @@ def get_postgres_data(command):
 def create_postgres_data(insert_query, insert_values):
     try:
         # Set up a connection to the postgres server.
-        conn_string = "host="+ os.getenv("DATABASE_HOST", None) +" port="+ "5432" +" dbname="+ os.getenv("DATABASE_NAME", None) +" user=" + os.getenv("DATABASE_USER", None) \
-        +" password="+ os.getenv("DATABASE_PASS", None)+" sslmode=require"
+        conn_string = "host="+ (config["DATABASE_HOST"] or None) +" port="+ "5432" +" dbname="+ (config["DATABASE_NAME"] or None) +" user=" + (config["DATABASE_USER"] or None) \
+    +" password="+ (config["DATABASE_PASS"] or None) +" sslmode=require"
         
         conn=psycopg2.connect(conn_string)
 
@@ -39,7 +37,7 @@ def create_postgres_data(insert_query, insert_values):
         print(count, "Record inserted successfully into table")
 
     except (Exception, psycopg2.Error) as error:
-        print("Failed to insert record into mobile table", error)
+        print("Failed to insert record into table", error)
 
     finally:
         # closing database connection.

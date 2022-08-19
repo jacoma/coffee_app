@@ -9,23 +9,21 @@ from endpoints.ml.postgres_data import get_postgres_data
 coffees = get_postgres_data('SELECT * FROM coffee_dim_coffee')
 
 
-ALREDY_LOADED_ERROR_MESSAGE = """
-If you need to reload the child data from the CSV file,
-first delete the db.sqlite3 file to destroy the database.
-Then, run `python manage.py migrate` for a new empty
-database with tables"""
+ALREADY_LOADED_ERROR_MESSAGE = """
+LOADED
+"""
 
 
 class Command(BaseCommand):
     # Show this when the user types help
-    help = "Loads data from children.csv"
+    help = "Loads data from the cleaned trade coffee."
 
     def handle(self, *args, **options):
     
-        # # Show this if the data already exist in the database
+        # Show this if the data already exist in the database
         # if dim_coffee.objects.exists():
-        #     print('child data already loaded...exiting.')
-        #     print(ALREDY_LOADED_ERROR_MESSAGE)
+        #     print('coffee data already loaded...')
+        #     print(ALREADY_LOADED_ERROR_MESSAGE)
         #     return
             
         # Show this before loading the data into the database
@@ -35,43 +33,55 @@ class Command(BaseCommand):
 
         count = 0
         #Code to load the data into database
-        for row in csv.reader(open('endpoints\my_coffee\data\/final_trade_coffee.csv', encoding='cp437')):
+        for row in csv.reader(open('endpoints\\data\\tmp\\final_coffee.csv', encoding='cp437')):
          
-            if int(row[0]) in coffee_ids:            
-                r = dim_coffee.objects.get(coffee_id=int(row[0]))
+            print(row[0])
+            if int(row[0]) in coffee_ids:     
+                pass       
+                # r = dim_coffee.objects.get(coffee_id=int(row[0]))
 
-                r.tradeUrl = row[8]
-                r.storage_path = row[7]
+                # r.tradeUrl = row[8]
+                # r.storage_path = row[7]
 
-                r.save(update_fields=['tradeUrl', 'storage_path'])
+                # r.save(update_fields=['tradeUrl', 'storage_path'])
             else:
             
-                my_variety = row[6].split(", ")
-                my_notes = row[11].split(", ")
-                roaster_x=dim_roaster.objects.get(roaster_id=int(row[9]))
+                print("Get variety")
+                my_variety = row[7].split(", ")
+
+                print("Get notes")
+                my_notes = row[15].split(", ")
+
+                print("Match roaster")
+                roaster_x=dim_roaster.objects.get(roaster_id=int(row[11]))
+
+                print("Match variety")
                 varietals_x=dim_varietal.objects.filter(varietal__in=my_variety)
+
+                print("Match notes")
                 notes_x=dim_notes.objects.filter(flavor_notes__in=my_notes)
 
-                if row[3] == '':
+                print("Get elevation")
+                if row[6] == '':
                     elevation_x = 0
-                evelvation_x = int(row[3])
+                elevation_x = int(row[6])
 
+                print("Create coffee")
                 coffee=dim_coffee(
                     coffee_id=int(row[0]),
                     name=row[1],
                     roaster=roaster_x,
-                    farmer=row[3],
-                    process=row[6],
-                    elevation=evelvation_x,
-                    storage_path=row[7],
+                    farmer=row[5],
+                    process=row[2],
+                    elevation=elevation_x,
+                    storage_path=row[9],
                     tradeUrl=row[8]
                     )  
 
-                if row[10] == '':
+                if row[3] == '':
                     print('')
                 else:
-                    coffee.country=countries.objects.get(country_code=int(row[10]))
-
+                    coffee.country=countries.objects.get(country_code=int(row[3]))
 
                 coffee.save()
                 coffee.varietals.set(varietals_x)
